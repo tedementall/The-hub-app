@@ -1,20 +1,21 @@
 package com.example.thehub.ui.home
 
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.WindowCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.thehub.R
 import com.example.thehub.di.ServiceLocator
 import com.example.thehub.ui.login.LoginActivity
+import com.example.thehub.utils.TokenStore
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.launch
 
@@ -22,47 +23,70 @@ class HomeActivity : AppCompatActivity() {
 
     private lateinit var recycler: RecyclerView
     private lateinit var progressBar: ProgressBar
-    private lateinit var bottomBar: BottomNavigationView
-
     private val adapter = ProductAdapter()
+
+    // Repos
     private val productRepository = ServiceLocator.productRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // Deja que el sistema pinte la barra de navegación (sin edge-to-edge)
-        WindowCompat.setDecorFitsSystemWindows(window, true)
-        // La barra de navegación del sistema en blanco
-        window.navigationBarColor = Color.WHITE
-
         setContentView(R.layout.activity_home)
 
-        recycler    = findViewById(R.id.rvProducts)
+        // Views
+        recycler = findViewById(R.id.rvProducts)
         progressBar = findViewById(R.id.progressBar)
-        bottomBar   = findViewById(R.id.bottomNav)
 
+        // Lista
         recycler.layoutManager = LinearLayoutManager(this)
         recycler.adapter = adapter
 
-        // Bottom bar (solo UI, el único que “hace algo” es Ajustes → Cerrar sesión)
-        bottomBar.setOnItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.menu_settings -> {
-                    showSettingsDialog()
-                    true
-                }
-                else -> {
-                    Toast.makeText(this, "Sección en desarrollo ✨", Toast.LENGTH_SHORT).show()
-                    true
+        // BottomNavigation
+        findViewById<BottomNavigationView?>(R.id.bottomNav)?.let { bottomBar ->
+            // Evitar que quede pegada a la barra de navegación
+            ViewCompat.setOnApplyWindowInsetsListener(bottomBar) { v, insets ->
+                val sys = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+                v.setPadding(
+                    v.paddingLeft,
+                    v.paddingTop,
+                    v.paddingRight,
+                    maxOf(v.paddingBottom, sys.bottom)
+                )
+                insets
+            }
+
+            bottomBar.selectedItemId = R.id.menu_home
+            bottomBar.setOnItemSelectedListener { item ->
+                when (item.itemId) {
+                    R.id.menu_settings -> {
+                        showSettingsDialog()
+                        true
+                    }
+                    else -> {
+                        // Por ahora mantenemos a Home como única pantalla funcional
+                        bottomBar.selectedItemId = R.id.menu_home
+                        true
+                    }
                 }
             }
         }
 
-        // Carga inicial de productos
+        // Carga inicial
         update()
     }
 
-    /** Carga/refresca la lista de productos desde Xano */
+    override fun onResume() {
+        super.onResume()
+        // Si no hay token, vuelve a Login
+        if (TokenStore.read(this).isNullOrEmpty()) {
+            val i = Intent(this, LoginActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            }
+            startActivity(i)
+            finish()
+        }
+    }
+
+    /** Descarga/actualiza la lista de productos desde Xano */
     private fun update() {
         progressBar.visibility = View.VISIBLE
         lifecycleScope.launch {
@@ -81,17 +105,22 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
+    /** Popup de ajustes con acción de Cerrar sesión */
     private fun showSettingsDialog() {
         AlertDialog.Builder(this)
             .setTitle("Ajustes")
-            .setItems(arrayOf("Cerrar sesión")) { dialog, which ->
+            .setItems(arrayOf("Cerrar sesión")) { _, which ->
                 if (which == 0) {
-                    // Si tienes tu TokenStore, descomenta estas dos líneas:
-                    // val store = com.example.thehub.utils.TokenStore(this)
-                    // store.clear()
+                    // 1) Borrar el token/estado de sesión
+                    TokenStore.clear(this)
 
-                    // Vuelve a la pantalla de login
-                    startActivity(Intent(this, LoginActivity::class.java))
+                    // 2) Ir a Login limpiando el back stack
+                    val intent = Intent(this, LoginActivity::class.java).apply {
+                        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    }
+                    startActivity(intent)
+
+                    // 3) Cerrar Home
                     finish()
                 }
             }
