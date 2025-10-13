@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="8dp"
+    app:cardBackgroundColor="@android:color/white"
+    app:cardCornerRadius="18dp"
+    app:cardElevation="4dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="12dp">
+
+        <ImageView
+            android:id="@+id/img"
+            android:layout_width="76dp"
+            android:layout_height="76dp"
+            android:scaleType="centerCrop"
+            android:background="@drawable/bg_card" />
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/img"
+            android:layout_alignTop="@id/img"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:textColor="#121212"
+            android:maxLines="1"
+            android:ellipsize="end"/>
+
+        <TextView
+            android:id="@+id/desc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/img"
+            android:layout_below="@id/name"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:textSize="12sp"
+            android:textColor="#6B6B6B"
+            android:maxLines="2"
+            android:ellipsize="end"/>
+
+        <TextView
+            android:id="@+id/price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignTop="@id/name"
+            android:textColor="#111111"
+            android:textStyle="bold"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/btnAdd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/img"
+            android:layout_toEndOf="@id/img"
+            android:layout_marginStart="12dp"
+            android:text="Agregar"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:textSize="12sp"
+            android:background="@drawable/bg_chip_purple"/>
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>
