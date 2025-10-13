@@ -1,45 +1,59 @@
 package com.example.thehub.ui.home
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.thehub.R
 import com.example.thehub.data.model.Product
-import com.example.thehub.databinding.ItemProductBinding
-import java.text.NumberFormat
-import java.util.Locale
 
 class ProductAdapter(
-    private val items: MutableList<Product> = mutableListOf()
-) : RecyclerView.Adapter<ProductAdapter.VH>() {
+    private val onClick: (Product) -> Unit = {}
+) : ListAdapter<Product, ProductAdapter.ProductVH>(DIFF) {
 
-    fun submit(list: List<Product>) {
-        items.clear()
-        items.addAll(list)
-        notifyDataSetChanged()
-    }
+    companion object {
+        private val DIFF = object : DiffUtil.ItemCallback<Product>() {
+            override fun areItemsTheSame(old: Product, new: Product): Boolean =
+                old.id == new.id
 
-    inner class VH(val binding: ItemProductBinding) : RecyclerView.ViewHolder(binding.root)
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
-        val binding = ItemProductBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return VH(binding)
-    }
-
-    override fun onBindViewHolder(holder: VH, position: Int) {
-        val item = items[position]
-        with(holder.binding) {
-            tvName.text = item.name
-            tvDesc.text = item.description
-            tvPrice.text = formatPrice(item.price)
-            // Si quieres, carga imagen con Coil cuando exista URL real
-            // ivThumb.load(item.image?.path) { crossfade(true) }
+            override fun areContentsTheSame(old: Product, new: Product): Boolean =
+                old == new
         }
     }
 
-    override fun getItemCount(): Int = items.size
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductVH {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_product, parent, false)
+        return ProductVH(view, onClick)
+    }
 
-    private fun formatPrice(value: Double): String {
-        val nf = NumberFormat.getCurrencyInstance(Locale("es", "CL")) // ajusta si quieres otra moneda
-        return nf.format(value)
+    override fun onBindViewHolder(holder: ProductVH, position: Int) {
+        holder.bind(getItem(position))
+    }
+
+    class ProductVH(
+        itemView: View,
+        private val onClick: (Product) -> Unit
+    ) : RecyclerView.ViewHolder(itemView) {
+
+        private val tvName = itemView.findViewById<TextView>(R.id.tvName)
+        private val tvDesc = itemView.findViewById<TextView>(R.id.tvDesc)
+        private val tvPrice = itemView.findViewById<TextView>(R.id.tvPrice)
+        private val ivThumb = itemView.findViewById<ImageView>(R.id.ivThumb)
+
+        fun bind(item: Product) {
+            tvName.text = item.name
+            tvDesc.text = item.description
+            tvPrice.text = "$${String.format("%,.0f", item.price)}"
+
+            // Si aún no tienes URL real, deja un placeholder:
+            ivThumb.setImageResource(R.drawable.logo_thehub)
+
+            itemView.setOnClickListener { onClick(item) }
+        }
     }
 }
