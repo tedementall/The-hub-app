@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -17,6 +16,7 @@ import com.example.thehub.di.ServiceLocator
 import com.example.thehub.ui.login.LoginActivity
 import com.example.thehub.utils.TokenStore
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch
 
 class HomeActivity : AppCompatActivity() {
@@ -25,68 +25,45 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var progressBar: ProgressBar
     private val adapter = ProductAdapter()
 
-    // Repos
+    // Repo
     private val productRepository = ServiceLocator.productRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-        // Views
         recycler = findViewById(R.id.rvProducts)
         progressBar = findViewById(R.id.progressBar)
+        val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNav) // <- usa el id del XML
 
-        // Lista
         recycler.layoutManager = LinearLayoutManager(this)
         recycler.adapter = adapter
 
-        // BottomNavigation
-        findViewById<BottomNavigationView?>(R.id.bottomNav)?.let { bottomBar ->
-            // Evitar que quede pegada a la barra de navegación
-            ViewCompat.setOnApplyWindowInsetsListener(bottomBar) { v, insets ->
+        // Evita que quede pegado a la barra de gestos
+        bottomNav?.let { bar ->
+            ViewCompat.setOnApplyWindowInsetsListener(bar) { v, insets ->
                 val sys = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-                v.setPadding(
-                    v.paddingLeft,
-                    v.paddingTop,
-                    v.paddingRight,
-                    maxOf(v.paddingBottom, sys.bottom)
-                )
+                v.setPadding(v.paddingLeft, v.paddingTop, v.paddingRight, v.paddingBottom + sys.bottom)
                 insets
             }
 
-            bottomBar.selectedItemId = R.id.menu_home
-            bottomBar.setOnItemSelectedListener { item ->
+            bar.menu.findItem(R.id.menu_home).isChecked = true
+            bar.setOnItemReselectedListener { /* no-op */ }
+            bar.setOnItemSelectedListener { item ->
                 when (item.itemId) {
-                    R.id.menu_settings -> {
-                        showSettingsDialog()
-                        true
-                    }
-                    else -> {
-                        // Por ahora mantenemos a Home como única pantalla funcional
-                        bottomBar.selectedItemId = R.id.menu_home
-                        true
-                    }
+                    R.id.menu_home -> true
+                    R.id.menu_search -> { Toast.makeText(this, "Buscar (próximamente)", Toast.LENGTH_SHORT).show(); true }
+                    R.id.menu_cart   -> { Toast.makeText(this, "Carrito (próximamente)", Toast.LENGTH_SHORT).show(); true }
+                    R.id.menu_profile-> { Toast.makeText(this, "Perfil (próximamente)", Toast.LENGTH_SHORT).show(); true }
+                    R.id.menu_settings -> { showSettingsDialog(); true }
+                    else -> false
                 }
             }
         }
 
-        // Carga inicial
         update()
     }
 
-    override fun onResume() {
-        super.onResume()
-        // Si no hay token, vuelve a Login
-        if (TokenStore.read(this).isNullOrEmpty()) {
-            val i = Intent(this, LoginActivity::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            }
-            startActivity(i)
-            finish()
-        }
-    }
-
-    /** Descarga/actualiza la lista de productos desde Xano */
     private fun update() {
         progressBar.visibility = View.VISIBLE
         lifecycleScope.launch {
@@ -105,24 +82,19 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    /** Popup de ajustes con acción de Cerrar sesión */
     private fun showSettingsDialog() {
-        AlertDialog.Builder(this)
+        MaterialAlertDialogBuilder(this)
             .setTitle("Ajustes")
-            .setItems(arrayOf("Cerrar sesión")) { _, which ->
+            .setItems(arrayOf("Cerrar sesión")) { dialog, which ->
                 if (which == 0) {
-                    // 1) Borrar el token/estado de sesión
                     TokenStore.clear(this)
-
-                    // 2) Ir a Login limpiando el back stack
                     val intent = Intent(this, LoginActivity::class.java).apply {
-                        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                     }
                     startActivity(intent)
-
-                    // 3) Cerrar Home
                     finish()
                 }
+                dialog.dismiss()
             }
             .setNegativeButton("Cancelar", null)
             .show()
