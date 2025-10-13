@@ -2,57 +2,60 @@ package com.example.thehub.ui.login
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.animation.AnimationUtils
+import android.widget.ImageView
 import android.widget.Toast
-import androidx.activity.ComponentActivity
-import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.example.thehub.R
+import com.example.thehub.data.model.LoginRequest
 import com.example.thehub.databinding.ActivityLoginBinding
 import com.example.thehub.di.ServiceLocator
 import com.example.thehub.ui.home.HomeActivity
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
-class LoginActivity : ComponentActivity() {
+class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
-
-    private val vm: LoginViewModel by viewModels {
-        ServiceLocator.init(applicationContext)
-        val repo = ServiceLocator.authRepository
-        val tokenStore = ServiceLocator.tokenStore
-        object : androidx.lifecycle.ViewModelProvider.Factory {
-            override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
-                @Suppress("UNCHECKED_CAST")
-                return LoginViewModel(repo) { token -> tokenStore.save(token) } as T
-            }
-        }
-    }
+    private val authRepository by lazy { ServiceLocator.authRepository }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Animación de logo
+        val anim = AnimationUtils.loadAnimation(this, R.anim.fade_in_scale)
+        findViewById<ImageView?>(R.id.ivLogoTop)?.startAnimation(anim)
+        findViewById<ImageView?>(R.id.ivLogo)?.startAnimation(anim)
+
         binding.btnLogin.setOnClickListener {
             val email = binding.etEmail.text?.toString()?.trim().orEmpty()
-            val pass  = binding.etPassword.text?.toString()?.trim().orEmpty()
-            vm.login(email, pass)
-        }
+            val pass  = binding.etPassword.text?.toString().orEmpty()
 
-        lifecycleScope.launchWhenStarted {
-            vm.state.collectLatest { st ->
-                when (st) {
-                    is LoginUiState.Loading -> binding.btnLogin.isEnabled = false
-                    is LoginUiState.Success -> {
-                        binding.btnLogin.isEnabled = true
-                        startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
-                        finish()
-                    }
-                    is LoginUiState.Error -> {
-                        binding.btnLogin.isEnabled = true
-                        Toast.makeText(this@LoginActivity, st.message, Toast.LENGTH_SHORT).show()
-                    }
-                    else -> Unit
+            if (email.isEmpty() || pass.isEmpty()) {
+                Toast.makeText(this, "Completa email y contraseña", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            doLogin(email, pass)
+        }
+    }
+
+    private fun doLogin(email: String, pass: String) {
+        binding.btnLogin.isEnabled = false
+        lifecycleScope.launch {
+            try {
+                val token = authRepository.login(LoginRequest(email, pass))
+                if (token.isNullOrBlank()) {
+                    Toast.makeText(this@LoginActivity, "Token vacío", Toast.LENGTH_SHORT).show()
+                    binding.btnLogin.isEnabled = true
+                    return@launch
                 }
+                startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
+                finish()
+            } catch (e: Exception) {
+                Toast.makeText(this@LoginActivity, "Login error: ${e.message}", Toast.LENGTH_LONG).show()
+                binding.btnLogin.isEnabled = true
             }
         }
     }

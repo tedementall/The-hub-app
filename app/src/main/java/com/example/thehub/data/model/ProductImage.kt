@@ -7,6 +7,5 @@ data class ProductImage(
     val type: String?,
     val size: Int?,
     val mime: String?,
-    val meta: Map<String, Any>?,
-    val url: String? // por si Xano empieza a mandar url directa
+    val meta: ImageMeta? // si usas ImageMeta
 )

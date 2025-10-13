@@ -1,28 +1,26 @@
 package com.example.thehub.ui.home
 
 import android.os.Bundle
-import android.view.animation.AnimationUtils
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.thehub.R
 import com.example.thehub.databinding.ActivityHomeBinding
 import com.example.thehub.di.ServiceLocator
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 class HomeActivity : ComponentActivity() {
 
     private lateinit var binding: ActivityHomeBinding
     private val adapter = ProductAdapter()
 
-    private val vm: HomeViewModel by viewModels {
-        val repo = ServiceLocator.productRepository
+    // VM manual (sin Hilt):
+    private val vm by viewModels<HomeViewModel> {
         object : androidx.lifecycle.ViewModelProvider.Factory {
             override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
                 @Suppress("UNCHECKED_CAST")
-                return HomeViewModel(repo) as T
+                return HomeViewModel(ServiceLocator.productRepository) as T
             }
         }
     }
@@ -32,20 +30,14 @@ class HomeActivity : ComponentActivity() {
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // animar logo top, opcional
-        binding.ivLogoTop.startAnimation(AnimationUtils.loadAnimation(this, R.anim.fade_in_scale))
+        binding.recycler.layoutManager = LinearLayoutManager(this)
+        binding.recycler.adapter = adapter
 
-        binding.rvProducts.layoutManager = LinearLayoutManager(this)
-        binding.rvProducts.adapter = adapter
-
-        lifecycleScope.launchWhenStarted {
-            vm.state.collectLatest { st ->
-                if (st.error != null) {
-                    Toast.makeText(this@HomeActivity, st.error, Toast.LENGTH_SHORT).show()
-                }
-                adapter.submit(st.products)
-            }
-        }
+        vm.state.onEach { st ->
+            binding.progressBar.visibility = if (st.loading) android.view.View.VISIBLE else android.view.View.GONE
+            st.error?.let { /* show a toast/snackbar */ }
+            adapter.submit(st.products)
+        }.launchIn(lifecycleScope)
 
         vm.load()
     }

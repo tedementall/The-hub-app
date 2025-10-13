@@ -1,25 +1,15 @@
-package com.example.thehub.repository
+package com.example.thehub.data.repository
 
 import com.example.thehub.data.model.LoginRequest
-import com.example.thehub.data.model.LoginResponse
 import com.example.thehub.data.remote.XanoAuthApi
-import com.example.thehub.utils.TokenStore
 
-class AuthRepository(
-    private val api: XanoAuthApi,
-    private val tokenStore: TokenStore
-) {
-    suspend fun login(body: LoginRequest): LoginResponse {
-        val res = api.login(body)
-        tokenStore.save(res.authToken)
-        return res
+class AuthRepository(private val api: XanoAuthApi) {
+
+    suspend fun login(body: LoginRequest): String? {
+        return try {
+            api.login(body).authToken  // <- devuelve solo el token
+        } catch (e: Exception) {
+            null
+        }
     }
-
-    suspend fun signup(body: LoginRequest): LoginResponse {
-        val res = api.signup(body)
-        tokenStore.save(res.authToken)
-        return res
-    }
-
-    fun logout() = tokenStore.clear()
 }
