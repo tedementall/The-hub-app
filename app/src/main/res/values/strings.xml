@@ -1,3 +1,35 @@
 <resources>
     <string name="app_name">thehub</string>
+    <string name="settings_brand_name">The Hub</string>
+    <string name="settings_title">Ajustes</string>
+    <string name="settings_subtitle">Personaliza tu experiencia</string>
+    <string name="settings_section_general">General</string>
+    <string name="settings_general_edit_profile">Editar Perfil</string>
+    <string name="settings_general_notifications">Notificaciones</string>
+    <string name="settings_general_privacy">Privacidad</string>
+    <string name="settings_section_product_options">Opciones de Producto</string>
+    <string name="settings_product_add">Agregar productos</string>
+    <string name="settings_product_scan">Escanear código</string>
+    <string name="settings_coming_soon">Funcionalidad disponible próximamente</string>
+    <string name="settings_logout">Cerrar Sesión</string>
+
+    <string name="add_product_title">Añadir Producto</string>
+    <string name="add_product_subtitle">Publica un nuevo artículo</string>
+    <string name="add_product_field_name">Nombre del Producto</string>
+    <string name="add_product_field_short_description">Descripción corta</string>
+    <string name="add_product_field_description">Descripción</string>
+    <string name="add_product_field_price">Precio</string>
+    <string name="add_product_field_stock_primary">Stock</string>
+    <string name="add_product_field_stock_secondary">Stock</string>
+    <string name="add_product_field_stock_tertiary">Stock</string>
+    <string name="add_product_select_images">Seleccionar Imágenes</string>
+    <string name="add_product_submit">Añadir Producto</string>
+    <string name="add_product_success">Producto añadido (demostración)</string>
+    <string name="add_product_no_images_selected">No se han seleccionado imágenes</string>
+    <string name="error_required_field">Campo obligatorio</string>
+
+    <plurals name="add_product_selected_images">
+        <item quantity="one">1 imagen seleccionada</item>
+        <item quantity="other">%d imágenes seleccionadas</item>
+    </plurals>
 </resources>
