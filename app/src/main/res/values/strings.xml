@@ -1,3 +1,20 @@
 <resources>
     <string name="app_name">thehub</string>
+    <string name="settings_title">AppFP</string>
+    <string name="settings_welcome">Bienvenido filtrado</string>
+    <string name="settings_logout">Cerrar sesión</string>
+    <string name="settings_product_name">Nombre del Producto</string>
+    <string name="settings_product_description">Descripción</string>
+    <string name="settings_product_price">Precio</string>
+    <string name="settings_product_stock">Stock</string>
+    <string name="settings_select_images">Seleccionar Imágenes</string>
+    <string name="settings_add_product">Añadir Producto</string>
+    <string name="settings_add_product_success">Producto añadido (demostración)</string>
+    <string name="settings_no_images_selected">No se han seleccionado imágenes</string>
+    <string name="error_required_field">Campo obligatorio</string>
+
+    <plurals name="settings_selected_images">
+        <item quantity="one">1 imagen seleccionada</item>
+        <item quantity="other">%d imágenes seleccionadas</item>
+    </plurals>
 </resources>

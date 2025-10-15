@@ -13,10 +13,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.thehub.R
 import com.example.thehub.di.ServiceLocator
-import com.example.thehub.ui.login.LoginActivity
-import com.example.thehub.utils.TokenStore
+import com.example.thehub.ui.settings.SettingsActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch
 
 class HomeActivity : AppCompatActivity() {
@@ -55,7 +53,10 @@ class HomeActivity : AppCompatActivity() {
                     R.id.menu_search -> { Toast.makeText(this, "Buscar (próximamente)", Toast.LENGTH_SHORT).show(); true }
                     R.id.menu_cart   -> { Toast.makeText(this, "Carrito (próximamente)", Toast.LENGTH_SHORT).show(); true }
                     R.id.menu_profile-> { Toast.makeText(this, "Perfil (próximamente)", Toast.LENGTH_SHORT).show(); true }
-                    R.id.menu_settings -> { showSettingsDialog(); true }
+                    R.id.menu_settings -> {
+                        startActivity(Intent(this, SettingsActivity::class.java))
+                        true
+                    }
                     else -> false
                 }
             }
@@ -82,21 +83,4 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    private fun showSettingsDialog() {
-        MaterialAlertDialogBuilder(this)
-            .setTitle("Ajustes")
-            .setItems(arrayOf("Cerrar sesión")) { dialog, which ->
-                if (which == 0) {
-                    TokenStore.clear(this)
-                    val intent = Intent(this, LoginActivity::class.java).apply {
-                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                    }
-                    startActivity(intent)
-                    finish()
-                }
-                dialog.dismiss()
-            }
-            .setNegativeButton("Cancelar", null)
-            .show()
-    }
 }
