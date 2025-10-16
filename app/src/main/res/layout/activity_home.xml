@@ -25,6 +25,7 @@
         android:elevation="0dp"
         android:stateListAnimator="@null"
         android:translationZ="0dp"
+        android:stateListAnimator="@null"
         android:fitsSystemWindows="true"
         android:paddingTop="0dp"
         android:paddingBottom="0dp"

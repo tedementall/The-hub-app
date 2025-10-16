@@ -8,6 +8,7 @@
     android:elevation="0dp"
     android:stateListAnimator="@null"
     android:translationZ="0dp"
+    android:stateListAnimator="@null"
     app:menu="@menu/bottom_nav"
     app:labelVisibilityMode="labeled"
     app:itemIconSize="24dp"
