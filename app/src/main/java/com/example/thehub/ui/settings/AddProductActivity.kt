@@ -26,10 +26,10 @@ class AddProductActivity : AppCompatActivity() {
 
     private lateinit var b: ActivityAddProductBinding
 
-    // imágenes seleccionadas
+
     private var pickedUris: List<Uri> = emptyList()
 
-    // Picker múltiple (galería)
+
     private val pickImages = registerForActivityResult(
         ActivityResultContracts.GetMultipleContents()
     ) { uris ->
@@ -46,15 +46,15 @@ class AddProductActivity : AppCompatActivity() {
         b = ActivityAddProductBinding.inflate(layoutInflater)
         setContentView(b.root)
 
-        // Seleccionar imágenes
+
         b.cardPickImages.setOnClickListener { pickImages.launch("image/*") }
 
-        // Crear producto
+
         b.btnAddProduct.setOnClickListener { onAddProductClick() }
     }
 
     private fun onAddProductClick() {
-        // 1) leer inputs
+
         val name = b.etName.text?.toString()?.trim().orEmpty()
         val shortDesc = b.etShortDesc.text?.toString()?.trim().orEmpty()
         val longDesc = b.etLongDesc.text?.toString()?.trim().orEmpty()
@@ -69,7 +69,7 @@ class AddProductActivity : AppCompatActivity() {
 
         val stock = b.etStock.text?.toString()?.toIntOrNull()
 
-        // 2) validaciones mínimas
+
         if (name.isBlank() || description.isBlank() || price == null || price <= 0.0 || stock == null || stock < 0) {
             Toast.makeText(this, "Completa nombre, descripción, precio (>0) y stock (>=0).", Toast.LENGTH_LONG).show()
             return
@@ -77,35 +77,35 @@ class AddProductActivity : AppCompatActivity() {
 
         setLoading(true)
 
-        // 3) corrutina: crear → (opcional) subir → patch
+
         lifecycleScope.launch {
             try {
                 val repo = ServiceLocator.productRepository
 
-                // 3.1) POST /product
+
                 val body = CreateProductRequest(
                     name = name,
                     description = description,
                     price = price,
-                    stockQuantity = stock,     // << si tu modelo se llama distinto, ajusta el nombre
-                    imageUrl = null            // imágenes se agregan con PATCH
+                    stockQuantity = stock,
+                    imageUrl = null
                 )
                 val created: Product = repo.createProduct(body)
 
-                // 3.2) si no hay imágenes, terminamos aquí
+
                 if (pickedUris.isEmpty()) {
                     toastSuccess("Producto creado id=${created.id}")
                     finish()
                     return@launch
                 }
 
-                // 3.3) subir imágenes a /upload/image
+
                 val uploaded: List<ProductImage> = uploadImages(pickedUris)
 
-                // 3.4) patch product con image_url
+
                 val updated = repo.patchImages(
                     id = created.id!!,
-                    body = PatchImagesRequest(imageUrl = uploaded) // << ajusta si tu data class usa otro nombre
+                    body = PatchImagesRequest(imageUrl = uploaded)
                 )
 
                 toastSuccess("Creado id=${updated.id} (imgs=${updated.imageUrl?.size ?: 0})")
@@ -119,14 +119,14 @@ class AddProductActivity : AppCompatActivity() {
         }
     }
 
-    /** Construye las partes multipart "content[]" y llama al UploadService */
+
     private suspend fun uploadImages(uris: List<Uri>): List<ProductImage> {
         val uploadService = ServiceLocator.uploadService
         val parts = withContext(Dispatchers.IO) { buildImageParts(uris) }
         return uploadService.uploadImages(parts)
     }
 
-    /** Crea los MultipartBody.Part con nombre EXACTO "content[]" */
+
     private fun buildImageParts(uris: List<Uri>): List<MultipartBody.Part> {
         val cr = contentResolver
         val parts = mutableListOf<MultipartBody.Part>()
@@ -139,8 +139,7 @@ class AddProductActivity : AppCompatActivity() {
             val bytes = cr.openInputStream(uri)?.use { it.readBytes() } ?: continue
             val reqBody: RequestBody = RequestBody.create(mime.toMediaTypeOrNull(), bytes)
 
-            // CLAVE para Xano:
-            // el nombre del campo debe ser "content[]"
+
             val part = MultipartBody.Part.createFormData("content[]", fileName, reqBody)
             parts += part
         }

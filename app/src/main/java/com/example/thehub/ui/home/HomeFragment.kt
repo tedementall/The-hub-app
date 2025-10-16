@@ -49,7 +49,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private fun loadProducts() {
         binding.progressBar.isVisible = true
         viewLifecycleOwner.lifecycleScope.launch {
-            // TIPAMOS explícitamente el Result para evitar "Cannot infer type..."
+
             val result: Result<List<Product>> = runCatching { productRepository.getProducts() }
 
             result

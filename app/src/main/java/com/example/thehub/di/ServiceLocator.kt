@@ -1,4 +1,3 @@
-// app/src/main/java/com/example/thehub/di/ServiceLocator.kt
 package com.example.thehub.di
 
 import android.content.Context
@@ -14,12 +13,12 @@ object ServiceLocator {
 
     private lateinit var appContext: Context
 
-    // Llamar una vez en Application.onCreate()
+
     fun init(context: Context) {
         appContext = context.applicationContext
     }
 
-    // usa tu TokenStore.read(context)
+
     private val tokenProvider: () -> String? = { TokenStore.read(appContext) }
 
     // APIs

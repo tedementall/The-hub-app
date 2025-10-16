@@ -8,8 +8,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.thehub.R
 import com.example.thehub.data.model.Product
+import com.example.thehub.utils.asVaultUrl
 
 class ProductAdapter(
     private val onClick: (Product) -> Unit = {}
@@ -50,8 +52,16 @@ class ProductAdapter(
             tvDesc.text = item.description
             tvPrice.text = "$${String.format("%,.0f", item.price)}"
 
-            // Si aún no tienes URL real, deja un placeholder:
-            ivThumb.setImageResource(R.drawable.logo_thehub)
+
+            val first = item.imageUrl?.firstOrNull()
+            val url = first?.path.asVaultUrl()
+
+
+            Glide.with(itemView)
+                .load(url)
+                .placeholder(R.drawable.ic_placeholder) // pon tu recurso
+                .error(R.drawable.ic_placeholder)
+                .into(ivThumb)
 
             itemView.setOnClickListener { onClick(item) }
         }

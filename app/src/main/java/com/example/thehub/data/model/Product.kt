@@ -4,7 +4,6 @@ import com.google.gson.annotations.SerializedName
 
 data class Product(
     val id: Int?,
-    @SerializedName("created_at") val createdAt: Long?,
     val name: String,
     val description: String,
     val price: Double,

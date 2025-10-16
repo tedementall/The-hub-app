@@ -7,7 +7,7 @@ import retrofit2.http.*
 
 interface XanoMainApi {
 
-    // NUEVO: listar productos
+
     @GET("product")
     suspend fun getProducts(
         @Query("limit") limit: Int? = null,

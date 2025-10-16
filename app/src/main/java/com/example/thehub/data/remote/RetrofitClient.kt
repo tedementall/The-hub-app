@@ -1,4 +1,3 @@
-// RetrofitClient.kt
 package com.example.thehub.data.remote
 
 import com.example.thehub.BuildConfig
@@ -74,7 +73,7 @@ object RetrofitClient {
             .build()
             .create(UploadService::class.java)
 
-    // Evita errores si te olvidaste la barra final en BuildConfig
+
     private fun ensureSlash(base: String): String =
         if (base.endsWith("/")) base else "$base/"
 }

@@ -46,19 +46,19 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         }
 
         binding.rowLogout.setOnClickListener {
-            // Llama al método clear de TokenStore para borrar el token y el estado de login. [cite: 17, 20]
+
             TokenStore.clear(requireContext())
 
-            // Prepara la navegación a la pantalla de Login.
+
             val intent = Intent(requireContext(), LoginActivity::class.java)
 
-            // Limpia el historial de navegación para que el usuario no pueda volver atrás.
+
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
 
-            // Ejecuta la navegación.
+
             startActivity(intent)
 
-            // Cierra la actividad actual (HomeActivity).
+
             requireActivity().finish()
         }
     }

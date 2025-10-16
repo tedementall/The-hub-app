@@ -21,7 +21,7 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Si ya hay sesión, ir directo a Home y limpiar back stack
+
         if (TokenStore.isLoggedIn(this)) {
             goToHomeAndFinish()
             return
@@ -50,7 +50,7 @@ class LoginActivity : AppCompatActivity() {
                         return@launch
                     }
 
-                    // Guardar sesión y navegar
+
                     TokenStore.save(this@LoginActivity, token)
                     goToHomeAndFinish()
 

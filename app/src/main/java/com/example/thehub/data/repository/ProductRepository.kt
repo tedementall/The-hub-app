@@ -8,7 +8,7 @@ import com.example.thehub.data.remote.XanoMainApi
 class ProductRepository(
     private val api: XanoMainApi
 ) {
-    // NUEVO: espejo del endpoint
+
     suspend fun getProducts(
         limit: Int? = null,
         offset: Int? = null,

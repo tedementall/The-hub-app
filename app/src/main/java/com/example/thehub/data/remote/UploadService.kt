@@ -1,4 +1,3 @@
-// file: app/src/main/java/com/example/thehub/data/remote/UploadService.kt
 package com.example.thehub.data.remote
 
 import com.example.thehub.data.model.ProductImage
