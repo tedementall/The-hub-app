@@ -26,9 +26,7 @@ class AddProductActivity : AppCompatActivity() {
 
     private lateinit var b: ActivityAddProductBinding
 
-
     private var pickedUris: List<Uri> = emptyList()
-
 
     private val pickImages = registerForActivityResult(
         ActivityResultContracts.GetMultipleContents()
@@ -46,15 +44,11 @@ class AddProductActivity : AppCompatActivity() {
         b = ActivityAddProductBinding.inflate(layoutInflater)
         setContentView(b.root)
 
-
         b.cardPickImages.setOnClickListener { pickImages.launch("image/*") }
-
-
         b.btnAddProduct.setOnClickListener { onAddProductClick() }
     }
 
     private fun onAddProductClick() {
-
         val name = b.etName.text?.toString()?.trim().orEmpty()
         val shortDesc = b.etShortDesc.text?.toString()?.trim().orEmpty()
         val longDesc = b.etLongDesc.text?.toString()?.trim().orEmpty()
@@ -69,7 +63,6 @@ class AddProductActivity : AppCompatActivity() {
 
         val stock = b.etStock.text?.toString()?.toIntOrNull()
 
-
         if (name.isBlank() || description.isBlank() || price == null || price <= 0.0 || stock == null || stock < 0) {
             Toast.makeText(this, "Completa nombre, descripción, precio (>0) y stock (>=0).", Toast.LENGTH_LONG).show()
             return
@@ -77,21 +70,19 @@ class AddProductActivity : AppCompatActivity() {
 
         setLoading(true)
 
-
         lifecycleScope.launch {
             try {
                 val repo = ServiceLocator.productRepository
 
-
-                val body = CreateProductRequest(
-                    name = name,
-                    description = description,
-                    price = price,
-                    stockQuantity = stock,
-                    imageUrl = null
+                val created: Product = repo.createProduct(
+                    CreateProductRequest(
+                        name = name,
+                        description = description,
+                        price = price,
+                        stockQuantity = stock,
+                        imageUrl = null
+                    )
                 )
-                val created: Product = repo.createProduct(body)
-
 
                 if (pickedUris.isEmpty()) {
                     toastSuccess("Producto creado id=${created.id}")
@@ -99,9 +90,15 @@ class AddProductActivity : AppCompatActivity() {
                     return@launch
                 }
 
-
                 val uploaded: List<ProductImage> = uploadImages(pickedUris)
-
+                if (uploaded.isEmpty()) {
+                    Toast.makeText(
+                        this@AddProductActivity,
+                        "No se pudieron subir las imágenes",
+                        Toast.LENGTH_LONG
+                    ).show()
+                    return@launch
+                }
 
                 val updated = repo.patchImages(
                     id = created.id!!,
@@ -119,13 +116,12 @@ class AddProductActivity : AppCompatActivity() {
         }
     }
 
-
     private suspend fun uploadImages(uris: List<Uri>): List<ProductImage> {
         val uploadService = ServiceLocator.uploadService
         val parts = withContext(Dispatchers.IO) { buildImageParts(uris) }
+        if (parts.isEmpty()) return emptyList()
         return uploadService.uploadImages(parts)
     }
-
 
     private fun buildImageParts(uris: List<Uri>): List<MultipartBody.Part> {
         val cr = contentResolver
@@ -135,11 +131,8 @@ class AddProductActivity : AppCompatActivity() {
             val mime = cr.getType(uri) ?: "image/jpeg"
             val ext = MimeTypeMap.getSingleton().getExtensionFromMimeType(mime) ?: "jpg"
             val fileName = "img_${System.currentTimeMillis()}.$ext"
-
             val bytes = cr.openInputStream(uri)?.use { it.readBytes() } ?: continue
             val reqBody: RequestBody = RequestBody.create(mime.toMediaTypeOrNull(), bytes)
-
-
             val part = MultipartBody.Part.createFormData("content[]", fileName, reqBody)
             parts += part
         }
@@ -153,15 +146,11 @@ class AddProductActivity : AppCompatActivity() {
         b.btnAddProduct.text = if (loading) "Creando..." else "Añadir Producto"
     }
 
-    private fun errorMessage(e: Throwable): String {
-        return when (e) {
-            is HttpException -> {
-                val body = e.response()?.errorBody()?.string()
-                "HTTP ${e.code()} ${e.message()} ${body ?: ""}".trim()
-            }
-            else -> e.message ?: e.toString()
-        }
-    }
+    private fun errorMessage(e: Throwable): String =
+        if (e is HttpException) {
+            val body = e.response()?.errorBody()?.string()
+            "HTTP ${e.code()} ${e.message()} ${body ?: ""}".trim()
+        } else e.message ?: e.toString()
 
     private fun toastSuccess(msg: String) {
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show()

@@ -1,8 +1,8 @@
 package com.example.thehub.data.model
 
-import java.io.Serializable
+import com.google.gson.annotations.SerializedName
 
 data class ImageMeta(
-    val width: Int?,
-    val height: Int?
-) : Serializable
+    @SerializedName("width") val width: Int,
+    @SerializedName("height") val height: Int
+)
