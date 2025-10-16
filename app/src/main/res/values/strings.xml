@@ -1,3 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">thehub</string>
+
+    <!-- Settings -->
+    <string name="settings_brand_name">The Hub</string>
+    <string name="settings_title">Ajustes</string>
+    <string name="settings_subtitle">Personaliza tu experiencia</string>
+    <string name="settings_section_general">General</string>
+    <string name="settings_general_edit_profile">Editar Perfil</string>
+    <string name="settings_general_notifications">Notificaciones</string>
+    <string name="settings_general_privacy">Privacidad</string>
+    <string name="settings_section_product_options">Opciones de Producto</string>
+    <string name="settings_product_add">Agregar productos</string>
+    <string name="settings_product_scan">Escanear código</string>
+    <string name="settings_coming_soon">Funcionalidad disponible próximamente</string>
+    <string name="settings_logout">Cerrar Sesión</string>
+
+    <!-- Add product -->
+    <string name="add_product_heading">Añadir Producto</string>
+    <string name="add_product_subheading">Publica un nuevo artículo</string>
+    <string name="add_product_field_name_hint">Nombre del producto</string>
+    <string name="add_product_field_short_description_hint">Descripción corta</string>
+    <string name="add_product_field_description_hint">Descripción</string>
+    <string name="add_product_field_price_hint">Precio</string>
+    <string name="add_product_field_stock_primary_hint">Stock</string>
+    <string name="add_product_field_stock_secondary_hint">Stock</string>
+    <string name="add_product_field_stock_tertiary_hint">Stock</string>
+    <string name="add_product_select_images_cta">Seleccionar imágenes</string>
+    <string name="add_product_submit_cta">Añadir producto</string>
+    <string name="add_product_success_message">Producto añadido (demostración)</string>
+    <string name="add_product_no_images_message">No se han seleccionado imágenes</string>
+    <string name="add_product_error_required">Campo obligatorio</string>
+
+    <plurals name="add_product_selected_images_count">
+        <item quantity="one">1 imagen seleccionada</item>
+        <item quantity="other">%d imágenes seleccionadas</item>
+    </plurals>
 </resources>
