@@ -7,5 +7,7 @@ data class ProductImage(
     val type: String?,
     val size: Int?,
     val mime: String?,
-    val meta: ImageMeta?
+    val meta: ImageMeta?,
+    val url: String?          // <--- nuevo
 )
+
