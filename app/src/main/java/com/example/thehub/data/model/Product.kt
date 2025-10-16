@@ -9,5 +9,5 @@ data class Product(
     val description: String,
     val price: Double,
     @SerializedName("stock_quantity") val stockQuantity: Int,
-    @SerializedName("image_url") val image: ProductImage?
+    @SerializedName("image_url") val image: List<ProductImage?>
 )

@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_login_gradient">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:paddingTop="24dp"
+        android:paddingBottom="96dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp">
+
+            <!-- Logo opcional -->
+            <ImageView
+                android:id="@+id/ivLogo"
+                android:layout_width="120dp"
+                android:layout_height="36dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/ic_thehub_logo"
+                android:contentDescription="@string/app_name" />
+
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ajustes"
+                android:textStyle="bold"
+                android:textSize="28sp"
+                android:paddingTop="16dp" />
+
+            <TextView
+                android:id="@+id/tvSubtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Personaliza tu experiencia"
+                android:textSize="14sp"
+                android:alpha="0.8"
+                android:paddingBottom="8dp" />
+
+            <!-- Card: General -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="12dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="General"
+                        android:textStyle="bold"
+                        android:textSize="18sp"
+                        android:padding="4dp" />
+
+                    <!-- Editar perfil -->
+                    <LinearLayout
+                        android:id="@+id/rowEditProfile"
+                        style="@style/SettingsRow" >
+
+                        <ImageView
+                            style="@style/SettingsRow.Icon"
+                            android:src="@drawable/ic_person" />
+
+                        <TextView
+                            style="@style/SettingsRow.TextPrimary"
+                            android:text="Editar Perfil" />
+                    </LinearLayout>
+
+                    <View style="@style/SettingsRow.Divider" />
+
+                    <!-- Notificaciones -->
+                    <LinearLayout
+                        android:id="@+id/rowNotifications"
+                        style="@style/SettingsRow" >
+
+                        <ImageView
+                            style="@style/SettingsRow.Icon"
+                            android:src="@drawable/ic_notifications" />
+
+                        <TextView
+                            style="@style/SettingsRow.TextPrimary"
+                            android:text="Notificaciones" />
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Card: Notificaciones/Privacidad (SIN textos a la derecha) -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="12dp">
+
+                    <LinearLayout
+                        android:id="@+id/rowNotifications2"
+                        style="@style/SettingsRow">
+
+                        <ImageView
+                            style="@style/SettingsRow.Icon"
+                            android:src="@drawable/ic_search" />
+
+                        <TextView
+                            style="@style/SettingsRow.TextPrimary"
+                            android:text="Notificaciones" />
+                    </LinearLayout>
+
+                    <View style="@style/SettingsRow.Divider" />
+
+                    <LinearLayout
+                        android:id="@+id/rowPrivacy"
+                        style="@style/SettingsRow">
+
+                        <ImageView
+                            style="@style/SettingsRow.Icon"
+                            android:src="@drawable/ic_privacy" />
+
+                        <TextView
+                            style="@style/SettingsRow.TextPrimary"
+                            android:text="Privacidad" />
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Card: Opciones de Producto -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="12dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Opciones de Producto"
+                        android:textStyle="bold"
+                        android:textSize="18sp"
+                        android:padding="4dp" />
+
+                    <!-- Agregar productos -->
+                    <LinearLayout
+                        android:id="@+id/rowAddProduct"
+                        style="@style/SettingsRow">
+
+                        <ImageView
+                            style="@style/SettingsRow.Icon"
+                            android:src="@drawable/ic_add" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                style="@style/SettingsRow.TextPrimary"
+                                android:text="Agregar productos" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Escanear código"
+                                android:textSize="12sp"
+                                android:alpha="0.8"/>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Card: Cerrar sesión -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:id="@+id/rowLogout"
+                    android:layout_width="match_parent"
+                    android:layout_height="68dp"
+                    android:gravity="center"
+                    android:padding="12dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Cerrar Sesión"
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        android:textColor="?attr/colorError"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Bottom Navigation -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        app:menu="@menu/bottom_nav"
+        app:itemHorizontalTranslationEnabled="false"
+        app:itemIconTint="@color/selector_nav__tint"
+        app:itemTextColor="@color/selector_nav__tint" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.thehub.R
 import com.example.thehub.di.ServiceLocator
+import com.example.thehub.ui.settings.SettingsActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.launch
 
@@ -22,7 +23,6 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var progressBar: ProgressBar
     private val adapter = ProductAdapter()
 
-    // Repo
     private val productRepository = ServiceLocator.productRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,12 +31,11 @@ class HomeActivity : AppCompatActivity() {
 
         recycler = findViewById(R.id.rvProducts)
         progressBar = findViewById(R.id.progressBar)
-        val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNav) // <- usa el id del XML
+        val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNav)
 
         recycler.layoutManager = LinearLayoutManager(this)
         recycler.adapter = adapter
 
-        // Evita que quede pegado a la barra de gestos
         bottomNav?.let { bar ->
             ViewCompat.setOnApplyWindowInsetsListener(bar) { v, insets ->
                 val sys = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -52,7 +51,11 @@ class HomeActivity : AppCompatActivity() {
                     R.id.menu_search -> { Toast.makeText(this, "Buscar (próximamente)", Toast.LENGTH_SHORT).show(); true }
                     R.id.menu_cart   -> { Toast.makeText(this, "Carrito (próximamente)", Toast.LENGTH_SHORT).show(); true }
                     R.id.menu_profile-> { Toast.makeText(this, "Perfil (próximamente)", Toast.LENGTH_SHORT).show(); true }
-                    // La referencia a SettingsActivity ha sido removida de aquí
+                    R.id.menu_settings -> {
+                        startActivity(Intent(this, SettingsActivity::class.java))
+                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+                        true
+                    }
                     else -> false
                 }
             }
@@ -78,5 +81,4 @@ class HomeActivity : AppCompatActivity() {
             }
         }
     }
-
 }
