@@ -10,9 +10,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Material3.Light.NoActionBar">
 
-        <activity
-            android:name=".ui.settings.addproduct.AddProductActivity"
-            android:exported="false" />
         <activity android:name=".ui.settings.SettingsActivity" android:exported="false" />
         <activity android:name=".ui.home.HomeActivity" android:exported="false" />
         <activity android:name=".ui.login.LoginActivity" android:exported="true">

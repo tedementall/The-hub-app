@@ -41,7 +41,7 @@ class AddProductActivity : AppCompatActivity() {
         }
 
         if (selectedImages.isEmpty()) {
-            tvImagesHint.text = getString(R.string.add_product_no_images_message)
+            tvImagesHint.text = getString(R.string.add_product_no_images_selected)
         }
 
         btnSelectImages.setOnClickListener {
@@ -64,30 +64,30 @@ class AddProductActivity : AppCompatActivity() {
             var hasError = false
 
             if (name.isEmpty()) {
-                etName.error = getString(R.string.add_product_error_required)
+                etName.error = getString(R.string.error_required_field)
                 hasError = true
             }
             if (shortDescription.isEmpty()) {
-                etShortDescription.error = getString(R.string.add_product_error_required)
+                etShortDescription.error = getString(R.string.error_required_field)
                 hasError = true
             }
             if (description.isEmpty()) {
-                etDescription.error = getString(R.string.add_product_error_required)
+                etDescription.error = getString(R.string.error_required_field)
                 hasError = true
             }
             if (price.isEmpty()) {
-                etPrice.error = getString(R.string.add_product_error_required)
+                etPrice.error = getString(R.string.error_required_field)
                 hasError = true
             }
             if (primaryStock.isEmpty()) {
-                etPrimaryStock.error = getString(R.string.add_product_error_required)
+                etPrimaryStock.error = getString(R.string.error_required_field)
                 hasError = true
             }
 
             if (!hasError) {
                 Toast.makeText(
                     this,
-                    getString(R.string.add_product_success_message),
+                    getString(R.string.add_product_success),
                     Toast.LENGTH_SHORT
                 ).show()
 
@@ -99,7 +99,7 @@ class AddProductActivity : AppCompatActivity() {
                 etSecondaryStock.text = null
                 etTertiaryStock.text = null
                 selectedImages.clear()
-                tvImagesHint.text = getString(R.string.add_product_no_images_message)
+                tvImagesHint.text = getString(R.string.add_product_no_images_selected)
             }
         }
     }
@@ -110,10 +110,10 @@ class AddProductActivity : AppCompatActivity() {
         selectedImages.addAll(uris)
 
         val text = if (selectedImages.isEmpty()) {
-            getString(R.string.add_product_no_images_message)
+            getString(R.string.add_product_no_images_selected)
         } else {
             resources.getQuantityString(
-                R.plurals.add_product_selected_images_count,
+                R.plurals.add_product_selected_images,
                 selectedImages.size,
                 selectedImages.size
             )
