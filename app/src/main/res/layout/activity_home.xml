@@ -22,25 +22,25 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@android:color/white"
-        android:elevation="0dp"
-        android:stateListAnimator="@null"
-        android:translationZ="0dp"
         android:stateListAnimator="@null"
         android:fitsSystemWindows="true"
-        android:paddingTop="0dp"
-        android:paddingBottom="0dp"
-        app:itemHorizontalTranslationEnabled="false"
-        app:itemIconSize="26dp"
-        app:itemIconTint="@color/selector_nav__tint"
-        app:itemPaddingTop="8dp"
-        app:itemPaddingBottom="14dp"
-        app:itemTextAppearanceActive="@style/BottomNavText"
-        app:itemTextAppearanceInactive="@style/BottomNavText"
-        app:itemTextColor="@color/selector_nav__tint"
-        app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/bottom_nav" />
+
+        app:menu="@menu/bottom_nav"
+        app:labelVisibilityMode="labeled"
+
+        app:itemIconSize="26dp"
+        app:itemIconTint="@color/selector_nav__tint"
+        app:itemTextColor="@color/selector_nav__tint"
+        app:itemTextAppearanceActive="@style/BottomNavText"
+        app:itemTextAppearanceInactive="@style/BottomNavText"
+        app:itemPaddingTop="8dp"
+        app:itemPaddingBottom="14dp"
+        app:itemHorizontalTranslationEnabled="false"
+
+        app:itemActiveIndicatorStyle="@style/Nav_NoIndicator"
+        app:itemRippleColor="@android:color/transparent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

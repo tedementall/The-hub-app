@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.bottomnavigation.BottomNavigationView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.bottomnavigation.BottomNavigationView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/bottomNav"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@android:color/white"
-    android:elevation="0dp"
     android:stateListAnimator="@null"
-    android:translationZ="0dp"
-    android:stateListAnimator="@null"
+
     app:menu="@menu/bottom_nav"
     app:labelVisibilityMode="labeled"
+
     app:itemIconSize="24dp"
-    app:itemHorizontalTranslationEnabled="false"
     app:itemIconTint="@color/selector_nav__tint"
-    app:itemTextColor="@color/selector_nav__tint" />
+    app:itemTextColor="@color/selector_nav__tint"
+    app:itemHorizontalTranslationEnabled="false"
+
+    app:itemActiveIndicatorStyle="@style/Nav_NoIndicator"
+    app:itemRippleColor="@android:color/transparent" />
