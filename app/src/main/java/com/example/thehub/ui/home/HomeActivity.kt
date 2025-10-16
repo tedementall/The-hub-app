@@ -1,84 +1,34 @@
 package com.example.thehub.ui.home
 
-import android.content.Intent
 import android.os.Bundle
-import android.view.View
-import android.widget.ProgressBar
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
 import com.example.thehub.R
-import com.example.thehub.di.ServiceLocator
-import com.example.thehub.ui.settings.SettingsActivity
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.coroutines.launch
+import com.example.thehub.databinding.ActivityHomeBinding
 
 class HomeActivity : AppCompatActivity() {
 
-    private lateinit var recycler: RecyclerView
-    private lateinit var progressBar: ProgressBar
-    private val adapter = ProductAdapter()
-
-    private val productRepository = ServiceLocator.productRepository
+    private lateinit var binding: ActivityHomeBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home)
+        binding = ActivityHomeBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        recycler = findViewById(R.id.rvProducts)
-        progressBar = findViewById(R.id.progressBar)
-        val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNav)
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.navHostFragment) as NavHostFragment
+        val navController = navHostFragment.navController
 
-        recycler.layoutManager = LinearLayoutManager(this)
-        recycler.adapter = adapter
+        binding.bottomNav.setupWithNavController(navController)
+        binding.bottomNav.setOnItemReselectedListener { /* no-op */ }
 
-        bottomNav?.let { bar ->
-            ViewCompat.setOnApplyWindowInsetsListener(bar) { v, insets ->
-                val sys = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-                v.setPadding(v.paddingLeft, v.paddingTop, v.paddingRight, v.paddingBottom + sys.bottom)
-                insets
-            }
-
-            bar.menu.findItem(R.id.menu_home).isChecked = true
-            bar.setOnItemReselectedListener { /* no-op */ }
-            bar.setOnItemSelectedListener { item ->
-                when (item.itemId) {
-                    R.id.menu_home -> true
-                    R.id.menu_search -> { Toast.makeText(this, "Buscar (próximamente)", Toast.LENGTH_SHORT).show(); true }
-                    R.id.menu_cart   -> { Toast.makeText(this, "Carrito (próximamente)", Toast.LENGTH_SHORT).show(); true }
-                    R.id.menu_profile-> { Toast.makeText(this, "Perfil (próximamente)", Toast.LENGTH_SHORT).show(); true }
-                    R.id.menu_settings -> {
-                        startActivity(Intent(this, SettingsActivity::class.java))
-                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
-                        true
-                    }
-                    else -> false
-                }
-            }
-        }
-
-        update()
-    }
-
-    private fun update() {
-        progressBar.visibility = View.VISIBLE
-        lifecycleScope.launch {
-            try {
-                val products = productRepository.getProducts()
-                adapter.submitList(products)
-            } catch (e: Exception) {
-                Toast.makeText(
-                    this@HomeActivity,
-                    "Error cargando productos: ${e.message ?: "desconocido"}",
-                    Toast.LENGTH_SHORT
-                ).show()
-            } finally {
-                progressBar.visibility = View.GONE
-            }
+        ViewCompat.setOnApplyWindowInsetsListener(binding.bottomNav) { v, insets ->
+            val sys = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(v.paddingLeft, v.paddingTop, v.paddingRight, v.paddingBottom + sys.bottom)
+            insets
         }
     }
 }
