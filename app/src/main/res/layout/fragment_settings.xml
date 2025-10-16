@@ -10,7 +10,7 @@
         android:layout_height="match_parent"
         android:fillViewport="true"
         android:paddingTop="24dp"
-        android:paddingBottom="96dp">
+        android:paddingBottom="32dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -18,34 +18,32 @@
             android:orientation="vertical"
             android:paddingHorizontal="16dp">
 
-            <!-- Logo opcional -->
             <ImageView
                 android:id="@+id/ivLogo"
                 android:layout_width="120dp"
                 android:layout_height="36dp"
                 android:layout_gravity="center_horizontal"
-                android:src="@drawable/ic_thehub_logo"
-                android:contentDescription="@string/app_name" />
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/ic_thehub_logo" />
 
             <TextView
                 android:id="@+id/tvTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Ajustes"
-                android:textStyle="bold"
+                android:paddingTop="16dp"
+                android:text="@string/settings_title"
                 android:textSize="28sp"
-                android:paddingTop="16dp" />
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvSubtitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Personaliza tu experiencia"
-                android:textSize="14sp"
                 android:alpha="0.8"
-                android:paddingBottom="8dp" />
+                android:paddingBottom="8dp"
+                android:text="@string/settings_welcome"
+                android:textSize="14sp" />
 
-            <!-- Card: General -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -62,12 +60,11 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:padding="4dp"
                         android:text="General"
-                        android:textStyle="bold"
                         android:textSize="18sp"
-                        android:padding="4dp" />
+                        android:textStyle="bold" />
 
-                    <!-- Editar perfil -->
                     <LinearLayout
                         android:id="@+id/rowEditProfile"
                         style="@style/SettingsRow" >
@@ -83,7 +80,6 @@
 
                     <View style="@style/SettingsRow.Divider" />
 
-                    <!-- Notificaciones -->
                     <LinearLayout
                         android:id="@+id/rowNotifications"
                         style="@style/SettingsRow" >
@@ -99,7 +95,6 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Card: Notificaciones/Privacidad (SIN textos a la derecha) -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -143,7 +138,6 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Card: Opciones de Producto -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -160,12 +154,11 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:padding="4dp"
                         android:text="Opciones de Producto"
-                        android:textStyle="bold"
                         android:textSize="18sp"
-                        android:padding="4dp" />
+                        android:textStyle="bold" />
 
-                    <!-- Agregar productos -->
                     <LinearLayout
                         android:id="@+id/rowAddProduct"
                         style="@style/SettingsRow">
@@ -187,15 +180,14 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:alpha="0.8"
                                 android:text="Escanear código"
-                                android:textSize="12sp"
-                                android:alpha="0.8"/>
+                                android:textSize="12sp" />
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Card: Cerrar sesión -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -213,25 +205,13 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Cerrar Sesión"
-                        android:textStyle="bold"
+                        android:text="@string/settings_logout"
+                        android:textColor="?attr/colorError"
                         android:textSize="16sp"
-                        android:textColor="?attr/colorError"/>
+                        android:textStyle="bold" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
-
         </LinearLayout>
     </ScrollView>
-
-    <!-- Bottom Navigation -->
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNav"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        app:menu="@menu/bottom_nav"
-        app:itemHorizontalTranslationEnabled="false"
-        app:itemIconTint="@color/selector_nav__tint"
-        app:itemTextColor="@color/selector_nav__tint" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
