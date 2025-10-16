@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.thehub.R
 import com.example.thehub.databinding.FragmentSettingsBinding
+import com.example.thehub.ui.login.LoginActivity // Asegúrate que esta ruta es correcta
+import com.example.thehub.utils.TokenStore
 import com.google.android.material.snackbar.Snackbar
 
 class SettingsFragment : Fragment(R.layout.fragment_settings) {
@@ -42,8 +44,22 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         binding.rowAddProduct.setOnClickListener {
             startActivity(Intent(requireContext(), AddProductActivity::class.java))
         }
+
         binding.rowLogout.setOnClickListener {
-            showMessage(getString(R.string.settings_logout_demo))
+            // Llama al método clear de TokenStore para borrar el token y el estado de login. [cite: 17, 20]
+            TokenStore.clear(requireContext())
+
+            // Prepara la navegación a la pantalla de Login.
+            val intent = Intent(requireContext(), LoginActivity::class.java)
+
+            // Limpia el historial de navegación para que el usuario no pueda volver atrás.
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+
+            // Ejecuta la navegación.
+            startActivity(intent)
+
+            // Cierra la actividad actual (HomeActivity).
+            requireActivity().finish()
         }
     }
 
