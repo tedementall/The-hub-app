@@ -83,8 +83,9 @@ dependencies {
 
     // Images
     implementation("io.coil-kt:coil:2.6.0")
+    implementation("com.github.bumptech.glide:glide:4.16.0")
 
-    // (Opcional) Testing libs básicas
+    // Testeo xd
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")

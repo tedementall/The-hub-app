@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">thehub</string>
-    <string name="settings_title">AppFP</string>
-    <string name="settings_welcome">Bienvenido filtrado</string>
+    <string name="settings_title">Ajustes de tu espacio</string>
+    <string name="settings_welcome">Personaliza tu experiencia</string>
     <string name="settings_logout">Cerrar sesión</string>
     <string name="settings_product_name">Nombre del Producto</string>
     <string name="settings_product_description">Descripción</string>

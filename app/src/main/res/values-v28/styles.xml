@@ -5,7 +5,6 @@
         <item name="android:textSize">12sp</item>
         <item name="android:includeFontPadding">false</item>
         <item name="android:lineHeight">14sp</item>
-        <!-- Opcional: ajusta color si quieres que cambie entre activo/inactivo
-             Usa app:itemTextColor en el BottomNavigationView si necesitas un selector -->
+
     </style>
 </resources>

@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.thehub.R
+import com.example.thehub.data.model.Product
 import com.example.thehub.databinding.FragmentHomeBinding
 import com.example.thehub.di.ServiceLocator
 import kotlinx.coroutines.launch
@@ -48,12 +49,15 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private fun loadProducts() {
         binding.progressBar.isVisible = true
         viewLifecycleOwner.lifecycleScope.launch {
-            runCatching { productRepository.getProducts() }
-                .onSuccess { products ->
+
+            val result: Result<List<Product>> = runCatching { productRepository.getProducts() }
+
+            result
+                .onSuccess { products: List<Product> ->
                     adapter.submitList(products)
                     binding.progressBar.isVisible = false
                 }
-                .onFailure { error ->
+                .onFailure { error: Throwable ->
                     binding.progressBar.isVisible = false
                     Toast.makeText(
                         requireContext(),
