@@ -14,6 +14,23 @@
     <string name="settings_no_images_selected">No se han seleccionado imágenes</string>
     <string name="error_required_field">Campo obligatorio</string>
 
+    <string name="home_title">Nuestros Productos</string>
+    <string name="home_subtitle">Explora nuestra selección</string>
+    <string name="home_products_error">Error cargando productos: %1$s</string>
+    <string name="error_unknown">desconocido</string>
+
+    <string name="search_placeholder_title">Buscar</string>
+    <string name="search_placeholder_subtitle">La búsqueda estará disponible próximamente.</string>
+    <string name="cart_placeholder_title">Carrito</string>
+    <string name="cart_placeholder_subtitle">Tu carrito estará disponible próximamente.</string>
+    <string name="profile_placeholder_title">Perfil</string>
+    <string name="profile_placeholder_subtitle">Tu perfil estará disponible próximamente.</string>
+
+    <string name="settings_edit_profile_coming_soon">Editar perfil (próximamente)</string>
+    <string name="settings_notifications_coming_soon">Notificaciones (próximamente)</string>
+    <string name="settings_privacy_coming_soon">Privacidad (próximamente)</string>
+    <string name="settings_logout_demo">Sesión cerrada (demo)</string>
+
     <plurals name="settings_selected_images">
         <item quantity="one">1 imagen seleccionada</item>
         <item quantity="other">%d imágenes seleccionadas</item>
