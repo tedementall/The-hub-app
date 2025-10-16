@@ -3,92 +3,41 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/bg_login_gradient">
+    android:layout_height="match_parent">
 
-    <!-- Header -->
-    <ImageView
-        android:id="@+id/ivLogoTop"
-        android:layout_width="140dp"
-        android:layout_height="140dp"
-        android:src="@drawable/logo_thehub"
-        android:contentDescription="@string/app_name"
-        android:scaleType="fitCenter"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="24dp"/>
-
-    <TextView
-        android:id="@+id/tvTitleHome"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Nuestros Productos"
-        android:textSize="28sp"
-        android:textStyle="bold"
-        android:textColor="#111111"
-        app:layout_constraintTop_toBottomOf="@id/ivLogoTop"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="12dp"/>
-
-    <TextView
-        android:id="@+id/tvSubtitleHome"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Explora nuestra selección"
-        android:textColor="#5E5E5E"
-        android:textSize="16sp"
-        app:layout_constraintTop_toBottomOf="@id/tvTitleHome"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="6dp"
-        android:layout_marginBottom="8dp"/>
-
-    <!-- Loader -->
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:indeterminate="true"
-        app:layout_constraintTop_toBottomOf="@id/tvSubtitleHome"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="12dp"/>
-
-    <!-- Lista -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvProducts"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/navHostFragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:clipToPadding="false"
-        android:paddingTop="8dp"
-        app:layout_constraintTop_toBottomOf="@id/tvSubtitleHome"
+        app:defaultNavHost="true"
         app:layout_constraintBottom_toTopOf="@id/bottomNav"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:navGraph="@navigation/home_nav_graph" />
 
-    <!-- BottomNavigationView (más alto y con texto un poco separado del icono) -->
-    <!-- BottomNavigationView -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNav"
         android:layout_width="0dp"
-        android:layout_height="92dp"
+        android:layout_height="wrap_content"
         android:background="@android:color/white"
+        android:stateListAnimator="@null"
         android:fitsSystemWindows="true"
-        app:menu="@menu/bottom_nav"
-        app:labelVisibilityMode="labeled"
+        android:paddingTop="0dp"
+        android:paddingBottom="0dp"
         app:itemHorizontalTranslationEnabled="false"
         app:itemIconSize="26dp"
+        app:itemIconTint="@color/selector_nav__tint"
         app:itemPaddingTop="8dp"
         app:itemPaddingBottom="14dp"
         app:itemTextAppearanceActive="@style/BottomNavText"
         app:itemTextAppearanceInactive="@style/BottomNavText"
-        android:paddingTop="0dp"
-        android:paddingBottom="0dp"
+        app:itemTextColor="@color/selector_nav__tint"
+        app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
+        app:menu="@menu/bottom_nav" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
