@@ -7,7 +7,7 @@ class AuthRepository(private val api: XanoAuthApi) {
 
     suspend fun login(body: LoginRequest): String? {
         return try {
-            api.login(body).authToken  // <- devuelve solo el token
+            api.login(body).authToken
         } catch (e: Exception) {
             null
         }
