@@ -6,6 +6,7 @@ import com.example.thehub.data.remote.UploadService
 import com.example.thehub.data.remote.XanoAuthApi
 import com.example.thehub.data.remote.XanoMainApi
 import com.example.thehub.data.repository.AuthRepository
+import com.example.thehub.data.repository.CartRepository // <-- AÑADIR IMPORT
 import com.example.thehub.data.repository.ProductRepository
 import com.example.thehub.utils.TokenStore
 
@@ -29,4 +30,9 @@ object ServiceLocator {
     // Repos
     val authRepository: AuthRepository by lazy { AuthRepository(authApi) }
     val productRepository: ProductRepository by lazy { ProductRepository(storeApi) }
+
+    // --- AÑADIR ESTA LÍNEA ---
+    // Esto crea una instancia única del repositorio del carrito
+    val cartRepository: CartRepository by lazy { CartRepository() }
+    // --- FIN DE LA ADICIÓN ---
 }

@@ -21,7 +21,6 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
         if (TokenStore.isLoggedIn(this)) {
             goToHomeAndFinish()
             return
@@ -44,14 +43,20 @@ class LoginActivity : AppCompatActivity() {
 
             lifecycleScope.launch {
                 try {
-                    val token = authRepository.login(LoginRequest(email, pass))
-                    if (token.isNullOrEmpty()) {
+                    // CAMBIO: Ahora recibe LoginResponse en lugar de String
+                    val response = authRepository.login(LoginRequest(email, pass))
+
+                    if (response == null) {
                         Toast.makeText(this@LoginActivity, "Contraseña incorrecta.", Toast.LENGTH_SHORT).show()
                         return@launch
                     }
 
+                    // CAMBIO: Guardar el token del objeto response
+                    TokenStore.save(this@LoginActivity, response.authToken)
 
-                    TokenStore.save(this@LoginActivity, token)
+                    // Opcional: Mostrar mensaje de bienvenida
+                    Toast.makeText(this@LoginActivity, "Bienvenido ${response.nombre}", Toast.LENGTH_SHORT).show()
+
                     goToHomeAndFinish()
 
                 } catch (e: Exception) {

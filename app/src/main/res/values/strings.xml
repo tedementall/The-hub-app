@@ -1,5 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!-- Profile Screen -->
+    <string name="profile_picture">Foto de perfil</string>
+    <string name="name_icon">Icono de nombre</string>
+    <string name="email_icon">Icono de correo</string>
+    <string name="phone_icon">Icono de teléfono</string>
+    <string name="rut_icon">Icono de RUT</string>
+    <string name="role_icon">Icono de rol</string>
+    <string name="address_icon">Icono de dirección</string>
+    <string name="personal_info">Información Personal</string>
+    <string name="full_name">Nombre completo</string>
+    <string name="email">Correo electrónico</string>
+    <string name="phone">Teléfono</string>
+    <string name="rut">RUT</string>
+    <string name="account_type">Tipo de cuenta</string>
+    <string name="address">Dirección</string>
+    <string name="edit_profile">Editar Perfil</string>
+    <string name="logout">Cerrar Sesión</string>
+    <string name="user_role">Usuario</string>
+    <string name="admin_role">Administrador</string>
+    <string name="loading">Cargando…</string>
+    <string name="no_session">No se encontró sesión activa</string>
+    <string name="profile_load_error">Error al cargar el perfil</string>
+    <string name="connection_error">Error de conexión</string>
+    <string name="coming_soon">Función próximamente</string>
+
     <string name="app_name">thehub</string>
     <string name="settings_title">Ajustes de tu espacio</string>
     <string name="settings_welcome">Personaliza tu experiencia</string>

@@ -8,8 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.thehub.R
 import com.example.thehub.databinding.FragmentSettingsBinding
-import com.example.thehub.ui.login.LoginActivity // Asegúrate que esta ruta es correcta
-import com.example.thehub.utils.TokenStore
+import com.example.thehub.ui.settings.AddProductActivity
 import com.google.android.material.snackbar.Snackbar
 
 class SettingsFragment : Fragment(R.layout.fragment_settings) {
@@ -29,37 +28,24 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.rowEditProfile.setOnClickListener {
-            showMessage(getString(R.string.settings_edit_profile_coming_soon))
-        }
+        // Notificaciones
         binding.rowNotifications.setOnClickListener {
-            showMessage(getString(R.string.settings_notifications_coming_soon))
+            showMessage("Notificaciones - Próximamente")
         }
-        binding.rowNotifications2.setOnClickListener {
-            showMessage(getString(R.string.settings_notifications_coming_soon))
+
+        // Historial de búsqueda
+        binding.rowSearch.setOnClickListener {
+            showMessage("Historial de búsqueda - Próximamente")
         }
+
+        // Privacidad
         binding.rowPrivacy.setOnClickListener {
-            showMessage(getString(R.string.settings_privacy_coming_soon))
+            showMessage("Privacidad - Próximamente")
         }
+
+        // Agregar Producto
         binding.rowAddProduct.setOnClickListener {
             startActivity(Intent(requireContext(), AddProductActivity::class.java))
-        }
-
-        binding.rowLogout.setOnClickListener {
-
-            TokenStore.clear(requireContext())
-
-
-            val intent = Intent(requireContext(), LoginActivity::class.java)
-
-
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-
-
-            startActivity(intent)
-
-
-            requireActivity().finish()
         }
     }
 
