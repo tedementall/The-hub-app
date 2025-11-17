@@ -1,52 +1,47 @@
 package com.example.thehub.ui.home
 
 import android.os.Bundle
-import android.view.animation.AnimationUtils
-import android.widget.Toast
-import androidx.activity.ComponentActivity
-import androidx.activity.viewModels
-import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
 import com.example.thehub.R
 import com.example.thehub.databinding.ActivityHomeBinding
-import com.example.thehub.di.ServiceLocator
-import kotlinx.coroutines.flow.collectLatest
 
-class HomeActivity : ComponentActivity() {
+class HomeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHomeBinding
-    private val adapter = ProductAdapter()
-
-    private val vm: HomeViewModel by viewModels {
-        val repo = ServiceLocator.productRepository
-        object : androidx.lifecycle.ViewModelProvider.Factory {
-            override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
-                @Suppress("UNCHECKED_CAST")
-                return HomeViewModel(repo) as T
-            }
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // animar logo top, opcional
-        binding.ivLogoTop.startAnimation(AnimationUtils.loadAnimation(this, R.anim.fade_in_scale))
 
-        binding.rvProducts.layoutManager = LinearLayoutManager(this)
-        binding.rvProducts.adapter = adapter
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.navHostFragment) as NavHostFragment
+        val navController = navHostFragment.navController
 
-        lifecycleScope.launchWhenStarted {
-            vm.state.collectLatest { st ->
-                if (st.error != null) {
-                    Toast.makeText(this@HomeActivity, st.error, Toast.LENGTH_SHORT).show()
-                }
-                adapter.submit(st.products)
-            }
+
+        binding.bottomNav.setupWithNavController(navController)
+
+
+        binding.bottomNav.setOnItemReselectedListener { /* no-op */ }
+
+
+        val initialBottomPadding = binding.bottomNav.paddingBottom
+
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.bottomNav) { v, insets ->
+
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+
+
+            v.setPadding(v.paddingLeft, v.paddingTop, v.paddingRight, initialBottomPadding + systemBars.bottom)
+
+
+            insets
         }
-
-        vm.load()
     }
 }

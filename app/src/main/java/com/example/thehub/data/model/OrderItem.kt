@@ -2,11 +2,13 @@ package com.example.thehub.data.model
 
 import com.google.gson.annotations.SerializedName
 
+/**
+ * Representa un solo ítem al momento de CREAR una orden.
+ * (Ajusta los campos si tu API de Xano espera otros nombres)
+ */
 data class OrderItem(
-    val id: Int,
-    @SerializedName("created_at") val createdAt: String,
-    val quantity: Int,
-    val price: Double,
-    @SerializedName("order_id") val orderId: Int,
-    @SerializedName("product_id") val productId: Int
+    @SerializedName("product_id") // El ID del producto
+    val productId: Int,
+    val quantity: Int, // La cantidad comprada
+    val price: Double // El precio al momento de la compra
 )
