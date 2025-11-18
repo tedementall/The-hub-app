@@ -1,24 +1,28 @@
 package com.example.thehub.ui.home
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.example.thehub.di.ServiceLocator
+import androidx.lifecycle.*
 import com.example.thehub.data.model.Product
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import com.example.thehub.data.repository.ProductRepository
 import kotlinx.coroutines.launch
 
-class HomeViewModel : ViewModel() {
-    private val repo = ServiceLocator.productRepository
+class HomeViewModel(
+    private val repo: ProductRepository
+) : ViewModel() {
 
-    private val _list = MutableStateFlow<List<Product>>(emptyList())
-    val list: StateFlow<List<Product>> = _list
+    private val _products = MutableLiveData<List<Product>>()   // <— tipo explícito
+    val products: LiveData<List<Product>> = _products
 
-    fun load() {
+    private val _error = MutableLiveData<String?>()
+    val error: LiveData<String?> = _error
+
+    fun loadProducts(q: String? = null) {
         viewModelScope.launch {
-            runCatching { repo.list() }
-                .onSuccess { _list.value = it }
-                .onFailure { /* handle/log */ }
+            try {
+                val data: List<Product> = repo.getProducts(limit = 100, offset = 0, q = q)
+                _products.value = data
+            } catch (e: Exception) {
+                _error.value = e.message
+            }
         }
     }
 }

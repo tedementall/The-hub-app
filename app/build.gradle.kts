@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-parcelize")
 }
 
 android {
@@ -28,6 +29,9 @@ android {
             "\"https://x8ki-letl-twmt.n7.xano.io/api:MJq6ok-f/\""
         )
         buildConfigField("int", "XANO_TOKEN_TTL_SEC", "86400") // 24h
+
+        renderscriptTargetApi = 28 // O el número de tu targetSdk
+        renderscriptSupportModeEnabled = true
     }
 
     buildTypes {
@@ -61,9 +65,18 @@ android {
 dependencies {
     // Material + UI
     implementation("com.google.android.material:material:1.12.0")
+    implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.constraintlayout:constraintlayout:2.2.0")
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation("androidx.cardview:cardview:1.0.0")
+    implementation("androidx.core:core-splashscreen:1.0.1")
+    implementation("jp.wasabeef:blurry:4.0.1")
+
+
+    // Navigation
+    implementation("androidx.navigation:navigation-fragment-ktx:2.8.2")
+    implementation("androidx.navigation:navigation-ui-ktx:2.8.2")
+    implementation("androidx.viewpager2:viewpager2:1.0.0")
 
     // Activity / Lifecycle / Coroutines
     implementation("androidx.activity:activity-ktx:1.9.2")
@@ -78,8 +91,9 @@ dependencies {
 
     // Images
     implementation("io.coil-kt:coil:2.6.0")
+    implementation("com.github.bumptech.glide:glide:4.16.0")
 
-    // (Opcional) Testing libs básicas
+    // Testeo xd
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")

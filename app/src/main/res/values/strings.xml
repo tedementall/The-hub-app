@@ -1,3 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!-- Profile Screen -->
+    <string name="profile_picture">Foto de perfil</string>
+    <string name="name_icon">Icono de nombre</string>
+    <string name="email_icon">Icono de correo</string>
+    <string name="phone_icon">Icono de teléfono</string>
+    <string name="rut_icon">Icono de RUT</string>
+    <string name="role_icon">Icono de rol</string>
+    <string name="address_icon">Icono de dirección</string>
+    <string name="personal_info">Información Personal</string>
+    <string name="full_name">Nombre completo</string>
+    <string name="email">Correo electrónico</string>
+    <string name="phone">Teléfono</string>
+    <string name="rut">RUT</string>
+    <string name="account_type">Tipo de cuenta</string>
+    <string name="address">Dirección</string>
+    <string name="edit_profile">Editar Perfil</string>
+    <string name="logout">Cerrar Sesión</string>
+    <string name="user_role">Usuario</string>
+    <string name="admin_role">Administrador</string>
+    <string name="loading">Cargando…</string>
+    <string name="no_session">No se encontró sesión activa</string>
+    <string name="profile_load_error">Error al cargar el perfil</string>
+    <string name="connection_error">Error de conexión</string>
+    <string name="coming_soon">Función próximamente</string>
+
     <string name="app_name">thehub</string>
+    <string name="settings_title">Ajustes de tu espacio</string>
+    <string name="settings_welcome">Personaliza tu experiencia</string>
+    <string name="settings_logout">Cerrar sesión</string>
+    <string name="settings_product_name">Nombre del Producto</string>
+    <string name="settings_product_description">Descripción</string>
+    <string name="settings_product_price">Precio</string>
+    <string name="settings_product_stock">Stock</string>
+    <string name="settings_select_images">Seleccionar Imágenes</string>
+    <string name="settings_add_product">Añadir Producto</string>
+    <string name="settings_add_product_success">Producto añadido (demostración)</string>
+    <string name="settings_no_images_selected">No se han seleccionado imágenes</string>
+    <string name="error_required_field">Campo obligatorio</string>
+
+    <string name="home_title">Nuestros Productos</string>
+    <string name="home_subtitle">Explora nuestra selección</string>
+    <string name="home_products_error">Error cargando productos: %1$s</string>
+    <string name="error_unknown">desconocido</string>
+
+    <string name="search_placeholder_title">Buscar</string>
+    <string name="search_placeholder_subtitle">La búsqueda estará disponible próximamente.</string>
+    <string name="cart_placeholder_title">Carrito</string>
+    <string name="cart_placeholder_subtitle">Tu carrito estará disponible próximamente.</string>
+    <string name="profile_placeholder_title">Perfil</string>
+    <string name="profile_placeholder_subtitle">Tu perfil estará disponible próximamente.</string>
+
+    <string name="settings_edit_profile_coming_soon">Editar perfil (próximamente)</string>
+    <string name="settings_notifications_coming_soon">Notificaciones (próximamente)</string>
+    <string name="settings_privacy_coming_soon">Privacidad (próximamente)</string>
+    <string name="settings_logout_demo">Sesión cerrada (demo)</string>
+
+    <plurals name="settings_selected_images">
+        <item quantity="one">1 imagen seleccionada</item>
+        <item quantity="other">%d imágenes seleccionadas</item>
+    </plurals>
 </resources>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/home_nav_graph"
+    app:startDestination="@id/menu_home">
+
+    <fragment
+        android:id="@+id/menu_home"
+        android:name="com.example.thehub.ui.home.HomeFragment"
+        android:label="@string/home_title" />
+
+    <fragment
+        android:id="@+id/menu_search"
+        android:name="com.example.thehub.ui.search.SearchFragment"
+        android:label="@string/search_placeholder_title" />
+
+    <fragment
+        android:id="@+id/menu_cart"
+        android:name="com.example.thehub.ui.cart.CartFragment"
+        android:label="@string/cart_placeholder_title" />
+
+    <fragment
+        android:id="@+id/menu_profile"
+        android:name="com.example.thehub.ui.profile.ProfileFragment"
+        android:label="@string/profile_placeholder_title" />
+
+    <fragment
+        android:id="@+id/menu_settings"
+        android:name="com.example.thehub.ui.settings.SettingsFragment"
+        android:label="@string/settings_title" />
+</navigation>

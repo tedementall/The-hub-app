@@ -2,4 +2,24 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Colores para el perfil -->
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+
+    <!-- Colores de texto -->
+    <color name="text_primary">#000000</color>
+    <color name="text_secondary">#666666</color>
+
+    <!-- Colores de glassmorphism -->
+    <color name="glass_background">#26FFFFFF</color>
+    <color name="glass_border">#33FFFFFF</color>
+
+    <!-- Colores de stock -->
+    <color name="stock_available">#4CAF50</color>
+    <color name="stock_low">#FF9800</color>
+    <color name="stock_out">#F44336</color>
+
+    <color name="blur_overlay_color">#B3FFFFFF</color>
 </resources>

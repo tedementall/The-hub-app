@@ -1,16 +1,15 @@
 package com.example.thehub.data.model
 
+import android.os.Parcelable // <-- Asegúrate de tener el import
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize // <-- Asegúrate de tener el import
 
+@Parcelize // <-- AÑADIR ESTO
 data class Product(
-    val id: Int,
-    @SerializedName("created_at") val createdAt: Long,            // timestamp numérico
+    val id: Int?,
     val name: String,
     val description: String,
     val price: Double,
-    @SerializedName("stock_quantity") val stockQuantity: Int,
-    @SerializedName("image_url") val image: ProductImage?          // objeto, NO String
-) {
-    val imageUrl: String?
-        get() = image?.url ?: image?.path // usa lo mejor disponible
-}
+    @SerializedName("image_url") val imageUrl: List<ProductImage>?,
+    @SerializedName("stock_quantity") val stockQuantity: Int
+) : Parcelable // <-- AÑADIR ESTO

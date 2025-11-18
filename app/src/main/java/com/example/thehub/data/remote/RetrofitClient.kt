@@ -10,44 +10,70 @@ import java.util.concurrent.TimeUnit
 
 object RetrofitClient {
 
-    private var tokenProvider: (() -> String?) = { null }
-    fun setTokenProvider(p: () -> String?) { tokenProvider = p }
+    private fun baseClient(extra: Interceptor? = null): OkHttpClient {
+        val log = HttpLoggingInterceptor().apply {
+            level = if (BuildConfig.DEBUG) {
+                HttpLoggingInterceptor.Level.BODY
+            } else {
+                HttpLoggingInterceptor.Level.NONE
+            }
+        }
 
-    private val authInterceptor = Interceptor { chain ->
-        val token = tokenProvider()
-        val req = if (!token.isNullOrBlank()) {
-            chain.request().newBuilder()
-                .addHeader("Authorization", "Bearer $token")
-                .build()
-        } else chain.request()
-        chain.proceed(req)
-    }
-
-    private val logger = HttpLoggingInterceptor().apply {
-        level = HttpLoggingInterceptor.Level.BODY
-    }
-
-    private fun okHttp(): OkHttpClient =
-        OkHttpClient.Builder()
-            .addInterceptor(authInterceptor)
-            .addInterceptor(logger)
+        return OkHttpClient.Builder()
+            .addInterceptor(log)
+            .apply { if (extra != null) addInterceptor(extra) }
+            // timeouts útiles para upload de imágenes
             .connectTimeout(30, TimeUnit.SECONDS)
-            .readTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(60, TimeUnit.SECONDS)
+            .writeTimeout(60, TimeUnit.SECONDS)
             .build()
+    }
 
-    private fun retrofit(baseUrl: String): Retrofit =
+    fun auth(): XanoAuthApi =
         Retrofit.Builder()
-            .baseUrl(baseUrl) // 👈 debe terminar en "/"
+            .baseUrl(ensureSlash(BuildConfig.XANO_AUTH_BASE))
             .addConverterFactory(GsonConverterFactory.create())
-            .client(okHttp())
+            .client(baseClient())
             .build()
+            .create(XanoAuthApi::class.java)
 
-    // APIs
-    val authApi: XanoAuthApi by lazy {
-        retrofit(BuildConfig.XANO_AUTH_BASE).create(XanoAuthApi::class.java)
-    }
+    fun store(tokenProvider: () -> String? = { null }): XanoMainApi =
+        Retrofit.Builder()
+            .baseUrl(ensureSlash(BuildConfig.XANO_STORE_BASE))
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(
+                baseClient(Interceptor { chain ->
+                    val t = tokenProvider()
+                    val req = if (!t.isNullOrBlank()) {
+                        chain.request().newBuilder()
+                            .addHeader("Authorization", "Bearer $t")
+                            .build()
+                    } else chain.request()
+                    chain.proceed(req)
+                })
+            )
+            .build()
+            .create(XanoMainApi::class.java)
 
-    val mainApi: XanoMainApi by lazy {
-        retrofit(BuildConfig.XANO_STORE_BASE).create(XanoMainApi::class.java)
-    }
+    fun upload(tokenProvider: () -> String? = { null }): UploadService =
+        Retrofit.Builder()
+            .baseUrl(ensureSlash(BuildConfig.XANO_STORE_BASE))
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(
+                baseClient(Interceptor { chain ->
+                    val t = tokenProvider()
+                    val req = if (!t.isNullOrBlank()) {
+                        chain.request().newBuilder()
+                            .addHeader("Authorization", "Bearer $t")
+                            .build()
+                    } else chain.request()
+                    chain.proceed(req)
+                })
+            )
+            .build()
+            .create(UploadService::class.java)
+
+
+    private fun ensureSlash(base: String): String =
+        if (base.endsWith("/")) base else "$base/"
 }

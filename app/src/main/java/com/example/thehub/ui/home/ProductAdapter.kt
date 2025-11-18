@@ -5,53 +5,65 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import coil.load
+import com.bumptech.glide.Glide
 import com.example.thehub.R
 import com.example.thehub.data.model.Product
+import com.example.thehub.utils.asVaultUrl
 
-class ProductAdapter : RecyclerView.Adapter<ProductAdapter.VH>() {
+class ProductAdapter(
+    private val onClick: (Product) -> Unit = {}
+) : ListAdapter<Product, ProductAdapter.ProductVH>(DIFF) {
 
-    private val items = mutableListOf<Product>()
+    companion object {
+        private val DIFF = object : DiffUtil.ItemCallback<Product>() {
+            override fun areItemsTheSame(old: Product, new: Product): Boolean =
+                old.id == new.id
 
-    fun submit(list: List<Product>) {
-        items.clear()
-        items.addAll(list)
-        notifyDataSetChanged()
+            override fun areContentsTheSame(old: Product, new: Product): Boolean =
+                old == new
+        }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
-        val v = LayoutInflater.from(parent.context)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductVH {
+        val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_product, parent, false)
-        return VH(v)
+        return ProductVH(view, onClick)
     }
 
-    override fun onBindViewHolder(holder: VH, position: Int) {
-        holder.bind(items[position])
+    override fun onBindViewHolder(holder: ProductVH, position: Int) {
+        holder.bind(getItem(position))
     }
 
-    override fun getItemCount(): Int = items.size
+    class ProductVH(
+        itemView: View,
+        private val onClick: (Product) -> Unit
+    ) : RecyclerView.ViewHolder(itemView) {
 
-    inner class VH(v: View) : RecyclerView.ViewHolder(v) {
-        private val img: ImageView = v.findViewById(R.id.img)
-        private val name: TextView = v.findViewById(R.id.name)
-        private val desc: TextView = v.findViewById(R.id.desc)
-        private val price: TextView = v.findViewById(R.id.price)
-        private val btnAdd: TextView = v.findViewById(R.id.btnAdd)
+        private val tvName = itemView.findViewById<TextView>(R.id.tvName)
+        private val tvDesc = itemView.findViewById<TextView>(R.id.tvDesc)
+        private val tvPrice = itemView.findViewById<TextView>(R.id.tvPrice)
+        private val ivThumb = itemView.findViewById<ImageView>(R.id.ivThumb)
 
-        fun bind(p: Product) {
-            name.text = p.name
-            desc.text = p.description
-            price.text = "$${String.format("%.2f", p.price)}"
+        fun bind(item: Product) {
+            tvName.text = item.name
+            tvDesc.text = item.description
+            tvPrice.text = "$${String.format("%,.0f", item.price)}"
 
-            // usa el helper de tu modelo: imageUrl = image?.url ?: image?.path
-            img.load(p.imageUrl) {
-                crossfade(true)
-                placeholder(R.drawable.bg_card)
-                error(R.drawable.bg_card)
-            }
 
-            // btnAdd.setOnClickListener { /* TODO: más adelante */ }
+            val first = item.imageUrl?.firstOrNull()
+            val url = first?.path.asVaultUrl()
+
+
+            Glide.with(itemView)
+                .load(url)
+                .placeholder(R.drawable.ic_placeholder) // pon tu recurso
+                .error(R.drawable.ic_placeholder)
+                .into(ivThumb)
+
+            itemView.setOnClickListener { onClick(item) }
         }
     }
 }
