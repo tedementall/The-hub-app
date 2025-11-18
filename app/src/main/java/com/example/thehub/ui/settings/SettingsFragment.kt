@@ -5,16 +5,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import com.example.thehub.R
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.example.thehub.databinding.FragmentSettingsBinding
-import com.example.thehub.ui.settings.AddProductActivity
-import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.launch
 
-class SettingsFragment : Fragment(R.layout.fragment_settings) {
+class SettingsFragment : Fragment() {
 
     private var _binding: FragmentSettingsBinding? = null
     private val binding get() = _binding!!
+
+    // Inyectamos el nuevo ViewModel
+    private val viewModel: SettingsViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,33 +32,36 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Notificaciones
-        binding.rowNotifications.setOnClickListener {
-            showMessage("Notificaciones - Próximamente")
-        }
+        setupClickListeners()
+        setupObservers()
 
-        // Historial de búsqueda
-        binding.rowSearch.setOnClickListener {
-            showMessage("Historial de búsqueda - Próximamente")
-        }
+        // Verificar el rol al cargar la pantalla
+        viewModel.checkUserRole()
+    }
 
-        // Privacidad
-        binding.rowPrivacy.setOnClickListener {
-            showMessage("Privacidad - Próximamente")
+    private fun setupObservers() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.isAdmin.collect { isAdmin ->
+                // Aquí ocurre la magia:
+                // Si es admin, VISIBLE. Si no, GONE (desaparece y no ocupa espacio)
+                binding.cardProductOptions.isVisible = isAdmin
+            }
         }
+    }
 
-        // Agregar Producto
-        binding.rowAddProduct.setOnClickListener {
-            startActivity(Intent(requireContext(), AddProductActivity::class.java))
+    private fun setupClickListeners() {
+        binding.apply {
+            // ... tus otros listeners de notificaciones, privacidad, etc. ...
+
+            // Listener para agregar productos (solo funcionará si es visible)
+            btnAddProduct.setOnClickListener {
+                startActivity(Intent(requireContext(), AddProductActivity::class.java))
+            }
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    private fun showMessage(message: String) {
-        Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
     }
 }
