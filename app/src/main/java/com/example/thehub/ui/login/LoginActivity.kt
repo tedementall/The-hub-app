@@ -6,6 +6,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen // <-- 1. IMPORTAR
 import androidx.lifecycle.lifecycleScope
 import com.example.thehub.R
 import com.example.thehub.data.model.LoginRequest
@@ -19,13 +20,23 @@ class LoginActivity : AppCompatActivity() {
     private val authRepository = ServiceLocator.authRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // <-- 2. LLAMAR ANTES DE SUPER.ONCREATE
+        // Esto instala el splash screen y lo prepara.
+        val splashScreen = installSplashScreen()
+
         super.onCreate(savedInstanceState)
 
+        // Tu lógica de checkeo está perfecta.
+        // Si el usuario ya está logueado...
         if (TokenStore.isLoggedIn(this)) {
+            // El splash ni siquiera mostrará el layout de login,
+            // sino que transicionará directo al HomeActivity.
             goToHomeAndFinish()
-            return
+            return // Importante para no seguir y llamar a setContentView
         }
 
+        // Si NO está logueado, el splash se quitará
+        // y se mostrará el layout de login.
         setContentView(R.layout.activity_login)
 
         val etEmail: EditText = findViewById(R.id.etEmail)

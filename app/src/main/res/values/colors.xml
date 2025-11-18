@@ -20,4 +20,6 @@
     <color name="stock_available">#4CAF50</color>
     <color name="stock_low">#FF9800</color>
     <color name="stock_out">#F44336</color>
+
+    <color name="blur_overlay_color">#B3FFFFFF</color>
 </resources>

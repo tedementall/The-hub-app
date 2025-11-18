@@ -29,6 +29,9 @@ android {
             "\"https://x8ki-letl-twmt.n7.xano.io/api:MJq6ok-f/\""
         )
         buildConfigField("int", "XANO_TOKEN_TTL_SEC", "86400") // 24h
+
+        renderscriptTargetApi = 28 // O el número de tu targetSdk
+        renderscriptSupportModeEnabled = true
     }
 
     buildTypes {
@@ -66,10 +69,14 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.2.0")
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation("androidx.cardview:cardview:1.0.0")
+    implementation("androidx.core:core-splashscreen:1.0.1")
+    implementation("jp.wasabeef:blurry:4.0.1")
+
 
     // Navigation
     implementation("androidx.navigation:navigation-fragment-ktx:2.8.2")
     implementation("androidx.navigation:navigation-ui-ktx:2.8.2")
+    implementation("androidx.viewpager2:viewpager2:1.0.0")
 
     // Activity / Lifecycle / Coroutines
     implementation("androidx.activity:activity-ktx:1.9.2")

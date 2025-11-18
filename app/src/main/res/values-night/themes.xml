@@ -2,6 +2,16 @@
     <style name="Base.Theme.Thehub" parent="Theme.Material3.DayNight.NoActionBar">
     </style>
 
+    <color name="splash_background">#FFAFEEEE</color>
+
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/splash_background</item>
+
+        <item name="windowSplashScreenAnimatedIcon">@drawable/avd_splash_animation</item>
+
+        <item name="postSplashScreenTheme">@style/Theme.Thehub</item>
+    </style>
+
     <style name="Theme.Thehub" parent="Base.Theme.Thehub" />
 
     <style name="BottomSheetDialogTheme" parent="Theme.Material3.DayNight.BottomSheetDialog">
