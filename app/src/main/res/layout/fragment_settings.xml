@@ -5,26 +5,22 @@
     android:layout_height="match_parent"
     android:background="#F5F5F5">
 
-    <!-- Header con degradado y bordes redondeados -->
     <FrameLayout
         android:id="@+id/headerContainer"
         android:layout_width="match_parent"
         android:layout_height="220dp">
 
-        <!-- Fondo con degradado -->
         <View
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/bg_settings_header"/>
 
-        <!-- Overlay glassmorphism -->
         <View
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:alpha="0.05"
             android:background="#FFFFFF"/>
 
-        <!-- Contenido del header -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -35,7 +31,6 @@
             android:paddingBottom="32dp"
             android:gravity="center_vertical">
 
-            <!-- Logo -->
             <ImageView
                 android:id="@+id/ivLogo"
                 android:layout_width="140dp"
@@ -45,7 +40,6 @@
                 android:src="@drawable/ic_thehub_logo"
                 android:layout_marginBottom="20dp"/>
 
-            <!-- Título -->
             <TextView
                 android:id="@+id/tvTitle"
                 android:layout_width="wrap_content"
@@ -60,7 +54,6 @@
                 android:shadowDy="2"
                 android:layout_marginBottom="6dp"/>
 
-            <!-- Subtítulo -->
             <TextView
                 android:id="@+id/tvSubtitle"
                 android:layout_width="wrap_content"
@@ -78,7 +71,6 @@
 
     </FrameLayout>
 
-    <!-- Contenido scrolleable -->
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -95,7 +87,6 @@
             android:paddingTop="8dp"
             android:paddingBottom="24dp">
 
-            <!-- Card Preferencias -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -112,7 +103,6 @@
                     android:orientation="vertical"
                     android:padding="20dp">
 
-                    <!-- Título de sección -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -123,7 +113,6 @@
                         android:letterSpacing="0.02"
                         android:layout_marginBottom="16dp"/>
 
-                    <!-- Notificaciones -->
                     <LinearLayout
                         android:id="@+id/rowNotifications"
                         android:layout_width="match_parent"
@@ -174,7 +163,6 @@
 
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Card Seguridad y Privacidad -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -191,7 +179,6 @@
                     android:orientation="vertical"
                     android:padding="20dp">
 
-                    <!-- Título de sección -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -202,7 +189,6 @@
                         android:letterSpacing="0.02"
                         android:layout_marginBottom="16dp"/>
 
-                    <!-- Búsqueda/Historial -->
                     <LinearLayout
                         android:id="@+id/rowSearch"
                         android:layout_width="match_parent"
@@ -249,7 +235,6 @@
 
                     </LinearLayout>
 
-                    <!-- Divider -->
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
@@ -258,7 +243,6 @@
                         android:alpha="0.1"
                         android:background="@color/text_primary"/>
 
-                    <!-- Privacidad -->
                     <LinearLayout
                         android:id="@+id/rowPrivacy"
                         android:layout_width="match_parent"
@@ -309,8 +293,8 @@
 
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Card Opciones de Producto -->
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardProductOptions"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
@@ -326,7 +310,6 @@
                     android:orientation="vertical"
                     android:padding="20dp">
 
-                    <!-- Título de sección -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -337,9 +320,8 @@
                         android:letterSpacing="0.02"
                         android:layout_marginBottom="16dp"/>
 
-                    <!-- Agregar Producto -->
                     <LinearLayout
-                        android:id="@+id/rowAddProduct"
+                        android:id="@+id/btnAddProduct"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
