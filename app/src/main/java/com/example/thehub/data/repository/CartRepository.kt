@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.asStateFlow
  * Utiliza un StateFlow para notificar a los observadores (como el CartFragment)
  * sobre cualquier cambio en la lista de items.
  */
-class CartRepository {
+object CartRepository {
 
     // _cartItems es la lista privada mutable
     // cartItems es la lista pública e inmutable que los fragmentos observarán

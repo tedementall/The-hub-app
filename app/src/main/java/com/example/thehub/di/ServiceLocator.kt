@@ -33,6 +33,6 @@ object ServiceLocator {
 
     // --- AÑADIR ESTA LÍNEA ---
     // Esto crea una instancia única del repositorio del carrito
-    val cartRepository: CartRepository by lazy { CartRepository() }
+    val cartRepository: CartRepository by lazy { CartRepository }
     // --- FIN DE LA ADICIÓN ---
 }

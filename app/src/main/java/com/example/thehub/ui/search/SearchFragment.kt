@@ -11,6 +11,7 @@ import com.example.thehub.R
 import com.example.thehub.data.remote.RetrofitClient
 import com.example.thehub.data.repository.ProductRepository
 import com.example.thehub.ui.home.ProductAdapter
+import com.example.thehub.ui.home.ProductDetailBottomSheet
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 
@@ -19,15 +20,15 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     private lateinit var viewModel: SearchViewModel
     private lateinit var adapter: ProductAdapter
 
-    // Lista de categorías incluyendo "Todos" al principio
-    // Asegúrate de que "cargador", "carcasas", etc., coincidan con tu Xano
+    // Lista de categorías (asegúrate de que coincidan con tu base de datos Xano)
     private val categoriesList = listOf("todos", "cargador", "carcasas", "audio", "otros")
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         // 1. Inicializar Dependencias
-        val api = RetrofitClient.store() // Usamos tu cliente existente
+        // Usamos .store() para la conexión pública
+        val api = RetrofitClient.store()
         val repository = ProductRepository(api)
         viewModel = SearchViewModel(repository)
 
@@ -37,17 +38,25 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         val rvSearchResults = view.findViewById<RecyclerView>(R.id.rvSearchResults)
         val pbLoading = view.findViewById<ProgressBar>(R.id.pbLoading)
 
-        // 3. Configurar RecyclerView (Grid de 2 columnas)
-        // IMPORTANTE: Usamos el layout 'item_product_grid' para el diseño vertical
+        // 3. Configurar RecyclerView (Grid Vertical)
+        // Usamos 'item_product_grid' para el diseño de tarjetas verticales
         adapter = ProductAdapter(layoutRes = R.layout.item_product_grid) { product ->
-            // Aquí iría la navegación al detalle del producto
-            // Ej: findNavController().navigate(...)
+
+            // Al hacer clic, abrimos el BottomSheet de detalle
+            val bottomSheet = ProductDetailBottomSheet.newInstance(
+                product = product,
+                onAddToCart = { selectedProduct, quantity ->
+                    // Acción al agregar al carrito
+                    viewModel.addToCart(selectedProduct, quantity)
+                }
+            )
+            bottomSheet.show(parentFragmentManager, "ProductDetailBottomSheet")
         }
 
         rvSearchResults.adapter = adapter
         rvSearchResults.layoutManager = GridLayoutManager(requireContext(), 2)
 
-        // 4. Configurar Chips de Categoría
+        // 4. Configurar Chips de Categoría (con sombras)
         setupCategories(cgCategories)
 
         // 5. Observadores (ViewModel -> UI)
@@ -69,36 +78,37 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                // Opcional: Si quieres búsqueda en tiempo real descomenta esto
+                // Opcional: Búsqueda en tiempo real
                 // viewModel.searchProducts(query = newText ?: "")
                 return false
             }
         })
 
-        // Carga inicial (Trae todos los productos al abrir)
+        // Carga inicial (trae todos los productos)
         viewModel.searchProducts()
     }
 
     private fun setupCategories(chipGroup: ChipGroup) {
         chipGroup.removeAllViews()
 
-        // Guardamos referencia al chip "Todos" para poder reactivarlo si es necesario
         var allChip: Chip? = null
 
         for (categoryName in categoriesList) {
             val chip = Chip(requireContext()).apply {
-                // Capitalizar primera letra (ej: "cargador" -> "Cargador")
+                // Texto capitalizado (ej: "cargador" -> "Cargador")
                 text = categoryName.replaceFirstChar { it.uppercase() }
                 isCheckable = true
                 isClickable = true
 
-                // ESTILO VISUAL: Blanco y limpio (como en tu diseño de Inicio)
-                setChipBackgroundColorResource(android.R.color.white)
-                chipStrokeWidth = 0f // Sin borde negro
-                // Puedes ajustar el radio si quieres más o menos redondeado
-                chipCornerRadius = 50f
+                // --- ESTILO VISUAL ---
+                setChipBackgroundColorResource(android.R.color.white) // Fondo blanco
+                chipStrokeWidth = 0f // Sin borde de línea
+                chipCornerRadius = 50f // Muy redondeado
 
-                // Si es "todos", lo marcamos por defecto al iniciar
+                // --- SOMBRA (ELEVACIÓN) ---
+                elevation = 12f // Esto le da el efecto de flotar
+
+                // Si es "todos", lo marcamos por defecto
                 if (categoryName == "todos") {
                     isChecked = true
                     allChip = this
@@ -107,20 +117,18 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
             chip.setOnCheckedChangeListener { buttonView, isChecked ->
                 if (isChecked) {
-                    // Comportamiento tipo "Radio Button": Solo uno activo a la vez
+                    // Lógica tipo Radio Button (solo uno activo a la vez)
                     chipGroup.clearCheck()
                     buttonView.isChecked = true
 
+                    // Filtrar
                     if (categoryName == "todos") {
-                        // Si eligió "Todos", enviamos null para limpiar el filtro
                         viewModel.searchProducts(category = null)
                     } else {
-                        // Si eligió una categoría, filtramos por ella
                         viewModel.searchProducts(category = categoryName)
                     }
                 } else {
-                    // Si el usuario desmarca manualmente el chip activo...
-                    // ...automáticamente volvemos a marcar "Todos" para no quedarnos sin selección
+                    // Si se desmarca todo, volver a activar "Todos" por defecto
                     if (chipGroup.checkedChipId == View.NO_ID) {
                         allChip?.isChecked = true
                         viewModel.searchProducts(category = null)

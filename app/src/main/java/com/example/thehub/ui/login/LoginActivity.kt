@@ -4,14 +4,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen // <-- 1. IMPORTAR
 import androidx.lifecycle.lifecycleScope
 import com.example.thehub.R
 import com.example.thehub.data.model.LoginRequest
 import com.example.thehub.di.ServiceLocator
 import com.example.thehub.ui.home.HomeActivity
+import com.example.thehub.ui.signup.RegisterActivity
 import com.example.thehub.utils.TokenStore
 import kotlinx.coroutines.launch
 
@@ -20,28 +21,18 @@ class LoginActivity : AppCompatActivity() {
     private val authRepository = ServiceLocator.authRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        // <-- 2. LLAMAR ANTES DE SUPER.ONCREATE
-        // Esto instala el splash screen y lo prepara.
-        val splashScreen = installSplashScreen()
-
         super.onCreate(savedInstanceState)
-
-        // Tu lógica de checkeo está perfecta.
-        // Si el usuario ya está logueado...
-        if (TokenStore.isLoggedIn(this)) {
-            // El splash ni siquiera mostrará el layout de login,
-            // sino que transicionará directo al HomeActivity.
-            goToHomeAndFinish()
-            return // Importante para no seguir y llamar a setContentView
-        }
-
-        // Si NO está logueado, el splash se quitará
-        // y se mostrará el layout de login.
         setContentView(R.layout.activity_login)
 
         val etEmail: EditText = findViewById(R.id.etEmail)
         val etPassword: EditText = findViewById(R.id.etPassword)
         val btnLogin: Button = findViewById(R.id.btnLogin)
+        val tvRegisterLink: TextView = findViewById(R.id.tvRegisterLink)
+
+        tvRegisterLink.setOnClickListener {
+            val intent = Intent(this, RegisterActivity::class.java)
+            startActivity(intent)
+        }
 
         btnLogin.setOnClickListener {
             val email = etEmail.text?.toString()?.trim().orEmpty()
@@ -54,26 +45,31 @@ class LoginActivity : AppCompatActivity() {
 
             lifecycleScope.launch {
                 try {
-                    // CAMBIO: Ahora recibe LoginResponse en lugar de String
                     val response = authRepository.login(LoginRequest(email, pass))
 
                     if (response == null) {
-                        Toast.makeText(this@LoginActivity, "Contraseña incorrecta.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@LoginActivity, "Contraseña incorrecta o usuario no encontrado.", Toast.LENGTH_SHORT).show()
                         return@launch
                     }
 
-                    // CAMBIO: Guardar el token del objeto response
-                    TokenStore.save(this@LoginActivity, response.authToken)
+                    // --- CORRECCIÓN AQUÍ ---
+                    // Verificamos que el token exista antes de intentar guardarlo
+                    val token = response.authToken
 
-                    // Opcional: Mostrar mensaje de bienvenida
-                    Toast.makeText(this@LoginActivity, "Bienvenido ${response.nombre}", Toast.LENGTH_SHORT).show()
+                    if (!token.isNullOrEmpty()) {
+                        // Ahora 'token' es seguro (String), no nulo
+                        TokenStore.save(this@LoginActivity, token)
 
-                    goToHomeAndFinish()
+                        Toast.makeText(this@LoginActivity, "Bienvenido ${response.nombre}", Toast.LENGTH_SHORT).show()
+                        goToHomeAndFinish()
+                    } else {
+                        Toast.makeText(this@LoginActivity, "Error: El servidor no devolvió un token.", Toast.LENGTH_SHORT).show()
+                    }
 
                 } catch (e: Exception) {
                     Toast.makeText(
                         this@LoginActivity,
-                        "Login error: ${e.message ?: "desconocido"}",
+                        "Error de conexión: ${e.message ?: "desconocido"}",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
