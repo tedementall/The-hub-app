@@ -3,25 +3,27 @@ package com.example.thehub.ui.profile
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.thehub.data.model.Address
 import com.example.thehub.di.ServiceLocator
 import com.example.thehub.utils.TokenStore
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
+// Modelo simplificado para la UI
 data class UserProfile(
     val nombre: String,
     val correo: String,
     val telefono: String?,
     val rut: String?,
-    val direccion: Address?,
-    val esAdministrador: Boolean
+    val esAdministrador: Boolean,
+    // Campos de dirección planos
+    val region: String?,
+    val comuna: String?,
+    val direccion: String?
 )
 
 class ProfileViewModel(application: Application) : AndroidViewModel(application) {
 
-    // Usar ServiceLocator igual que en LoginActivity
     private val authRepository = ServiceLocator.authRepository
 
     private val _userProfile = MutableStateFlow<UserProfile?>(null)
@@ -49,13 +51,17 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
                 val response = authRepository.getUserProfile(token)
 
                 if (response != null) {
+                    // Mapeamos la respuesta de la API a nuestro objeto de UI
                     _userProfile.value = UserProfile(
                         nombre = response.nombre,
                         correo = response.correo,
                         telefono = response.telefono,
                         rut = response.rut,
-                        direccion = response.direccion,
-                        esAdministrador = response.esAdministrador
+                        esAdministrador = response.esAdministrador,
+                        // Aquí conectamos los nuevos campos
+                        region = response.region,
+                        comuna = response.comuna,
+                        direccion = response.direccionDetalle
                     )
                 } else {
                     _error.value = "Error al cargar el perfil"

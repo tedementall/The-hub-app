@@ -17,7 +17,6 @@ class ProfileFragment : Fragment() {
 
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
-
     private val viewModel: ProfileViewModel by viewModels()
 
     override fun onCreateView(
@@ -31,16 +30,12 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         setupObservers()
         setupClickListeners()
-
-        // Cargar datos del perfil
         viewModel.loadUserProfile()
     }
 
     private fun setupObservers() {
-        // Observar el estado de carga
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.isLoading.collect { isLoading ->
                 binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
@@ -48,47 +43,27 @@ class ProfileFragment : Fragment() {
             }
         }
 
-        // Observar los datos del usuario
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.userProfile.collect { user ->
                 user?.let {
                     binding.apply {
                         tvUserName.text = it.nombre
                         tvUserEmail.text = it.correo
-
-                        // Mostrar rol del usuario
                         tvUserRole.text = if (it.esAdministrador) "Administrador" else "Usuario"
 
-                        // Mostrar dirección si existe
-                        if (it.direccion != null) {
-                            val direccionCompleta = buildString {
-                                if (it.direccion.calle.isNotEmpty()) {
-                                    append(it.direccion.calle)
-                                }
-                                if (it.direccion.numero.isNotEmpty()) {
-                                    append(" #${it.direccion.numero}")
-                                }
-                                if (it.direccion.depto.isNotEmpty()) {
-                                    append(", Depto. ${it.direccion.depto}")
-                                }
-                                if (it.direccion.comuna.isNotEmpty() || it.direccion.region.isNotEmpty()) {
-                                    append("\n${it.direccion.comuna}")
-                                    if (it.direccion.comuna.isNotEmpty() && it.direccion.region.isNotEmpty()) {
-                                        append(", ")
-                                    }
-                                    append(it.direccion.region)
-                                }
-                            }
-                            tvUserAddress.text = if (direccionCompleta.isNotEmpty()) {
-                                direccionCompleta
-                            } else {
-                                "No hay dirección registrada"
-                            }
+                        // --- LÓGICA DE DIRECCIÓN ACTUALIZADA ---
+                        if (!it.direccion.isNullOrEmpty()) {
+                            val sb = StringBuilder()
+                            sb.append(it.direccion)
+                            if (!it.comuna.isNullOrEmpty()) sb.append("\n${it.comuna}")
+                            if (!it.region.isNullOrEmpty()) sb.append(", ${it.region}")
+
+                            tvUserAddress.text = sb.toString()
                         } else {
                             tvUserAddress.text = "No hay dirección registrada"
                         }
+                        // ---------------------------------------
 
-                        // Mostrar teléfono si existe
                         if (!it.telefono.isNullOrEmpty()) {
                             tvUserPhone.text = it.telefono
                             phoneLayout.visibility = View.VISIBLE
@@ -96,7 +71,6 @@ class ProfileFragment : Fragment() {
                             phoneLayout.visibility = View.GONE
                         }
 
-                        // Mostrar RUT si existe
                         if (!it.rut.isNullOrEmpty()) {
                             tvUserRut.text = it.rut
                             rutLayout.visibility = View.VISIBLE
@@ -108,27 +82,31 @@ class ProfileFragment : Fragment() {
             }
         }
 
-        // Observar errores
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.error.collect { errorMessage ->
-                errorMessage?.let {
-                    Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
-                }
+            viewModel.error.collect { error ->
+                error?.let { Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show() }
             }
         }
     }
 
     private fun setupClickListeners() {
         binding.apply {
-            // Botón para editar perfil
+            // Botón EDITAR PERFIL conectado
             btnEditProfile.setOnClickListener {
-                Toast.makeText(requireContext(), "Función de edición próximamente", Toast.LENGTH_SHORT).show()
+                val currentUser = viewModel.userProfile.value
+                val intent = Intent(requireContext(), EditProfileActivity::class.java)
+
+                // Pasamos datos actuales para rellenar
+                if (currentUser != null) {
+                    intent.putExtra("NAME", currentUser.nombre)
+                    intent.putExtra("ADDRESS", currentUser.direccion)
+                    // Agrega comuna/region si quieres pre-llenarlos en el futuro
+                }
+                startActivity(intent)
             }
 
-            // Botón para cerrar sesión
             btnLogout.setOnClickListener {
                 viewModel.logout()
-                // Navegar al login
                 val intent = Intent(requireContext(), LoginActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 startActivity(intent)

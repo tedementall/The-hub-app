@@ -17,16 +17,23 @@ data class LoginResponse(
     @SerializedName("rut")
     val rut: String? = null,
 
-    @SerializedName("address")
-    val direccion: Address? = null,
+    // --- ACTUALIZADO: Datos planos para Xano ---
+    @SerializedName("region")
+    val region: String? = null,
+
+    @SerializedName("comuna")
+    val comuna: String? = null,
+
+    @SerializedName("address_detail") // Coincide con tu columna de Xano
+    val direccionDetalle: String? = null,
 
     @SerializedName("user_type")
     val tipoUsuario: String? = null,
 
     @SerializedName("authToken")
-    val authToken: String
+    val authToken: String? // Puede venir nulo en /auth/me
 ) {
-    // Propiedad calculada para saber si es administrador
+    // Lógica para saber si es admin
     val esAdministrador: Boolean
         get() = tipoUsuario == "admin" || tipoUsuario == "administrator"
 }
