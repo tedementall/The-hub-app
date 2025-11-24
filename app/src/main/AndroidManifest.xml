@@ -52,6 +52,13 @@
             android:exported="false"
             android:theme="@style/Theme.Thehub" />
 
+        <activity android:name=".ui.profile.MyOrdersActivity" />
+
+        <activity
+            android:name=".ui.settings.AdminProductListActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
     </application>
 
 </manifest>

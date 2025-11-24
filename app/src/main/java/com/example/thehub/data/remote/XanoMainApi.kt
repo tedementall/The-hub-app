@@ -7,10 +7,10 @@ import com.example.thehub.data.model.PatchImagesRequest
 import com.example.thehub.data.model.Product
 import com.example.thehub.data.model.ProductImage
 import okhttp3.MultipartBody
+import retrofit2.Response
 import retrofit2.http.*
 
 interface XanoMainApi {
-
 
     @GET("product")
     suspend fun getProducts(
@@ -20,19 +20,16 @@ interface XanoMainApi {
         @Query("category") category: String? = null
     ): List<Product>
 
-
     @POST("product")
     suspend fun createProduct(
         @Body body: CreateProductRequest
     ): Product
-
 
     @Multipart
     @POST("upload/image")
     suspend fun uploadImages(
         @Part parts: List<MultipartBody.Part>
     ): List<ProductImage>
-
 
     @PATCH("product/{id}")
     suspend fun patchProductImages(
@@ -41,8 +38,25 @@ interface XanoMainApi {
     ): Product
 
 
+
+    @PATCH("product/{id}")
+    suspend fun editProduct(
+        @Path("id") id: Int,
+        @Body body: CreateProductRequest
+    ): Product
+
+    @DELETE("product/{id}")
+    suspend fun deleteProduct(
+        @Path("id") id: Int
+    ): Response<Unit>
+
+
+
+    @GET("order")
+    suspend fun getOrders(
+        @Query("user_id") userId: Int
+    ): List<Order>
+
     @POST("order")
-    suspend fun createOrder(
-        @Body body: CreateOrderRequest
-    ): Order
+    suspend fun createOrder(@Body body: CreateOrderRequest): Order
 }

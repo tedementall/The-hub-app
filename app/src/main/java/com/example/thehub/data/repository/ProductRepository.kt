@@ -49,4 +49,25 @@ class ProductRepository(private val api: XanoMainApi) {
             null
         }
     }
+
+    suspend fun editProduct(token: String, id: Int, request: CreateProductRequest): Product? {
+        return try {
+            // Asumiendo que tu variable de API se llama 'api'
+            api.editProduct(id, request)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+    suspend fun deleteProduct(token: String, id: Int): Boolean {
+        return try {
+            val response = api.deleteProduct(id)
+            response.isSuccessful
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
+        }
+    }
+
 }

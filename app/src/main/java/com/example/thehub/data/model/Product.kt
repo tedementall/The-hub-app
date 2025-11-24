@@ -11,5 +11,6 @@ data class Product(
     val description: String,
     val price: Double,
     @SerializedName("image_url") val imageUrl: List<ProductImage>?,
-    @SerializedName("stock_quantity") val stockQuantity: Int
+    @SerializedName("stock_quantity") val stockQuantity: Int,
+    val category: String?
 ) : Parcelable
