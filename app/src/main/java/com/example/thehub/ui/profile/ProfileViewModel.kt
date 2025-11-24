@@ -9,14 +9,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-// Modelo simplificado para la UI
+
 data class UserProfile(
+    val id: Int,
     val nombre: String,
     val correo: String,
     val telefono: String?,
     val rut: String?,
     val esAdministrador: Boolean,
-    // Campos de dirección planos
     val region: String?,
     val comuna: String?,
     val direccion: String?
@@ -51,16 +51,17 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
                 val response = authRepository.getUserProfile(token)
 
                 if (response != null) {
-                    // Mapeamos la respuesta de la API a nuestro objeto de UI
                     _userProfile.value = UserProfile(
+                        id = response.id,
                         nombre = response.nombre,
                         correo = response.correo,
                         telefono = response.telefono,
                         rut = response.rut,
                         esAdministrador = response.esAdministrador,
-                        // Aquí conectamos los nuevos campos
                         region = response.region,
                         comuna = response.comuna,
+
+
                         direccion = response.direccionDetalle
                     )
                 } else {

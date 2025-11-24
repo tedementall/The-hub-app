@@ -23,12 +23,14 @@ class CheckoutActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCheckoutBinding
     private val profileViewModel: ProfileViewModel by viewModels()
+
     private val cartRepository: CartRepository = ServiceLocator.cartRepository
+    private val orderRepository = ServiceLocator.orderRepository
+
     private val checkoutAdapter = CheckoutSummaryAdapter()
 
-
-    private var hasValidAddress: Boolean = false
     private var currentSubtotal: Double = 0.0
+    private var hasValidAddress: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,7 +41,6 @@ class CheckoutActivity : AppCompatActivity() {
         setupRecyclerView()
         setupObservers()
         setupClickListeners()
-
 
         profileViewModel.loadUserProfile()
     }
@@ -54,20 +55,15 @@ class CheckoutActivity : AppCompatActivity() {
     }
 
     private fun setupClickListeners() {
-
         val goToEditProfile = {
-            val intent = Intent(this, EditProfileActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, EditProfileActivity::class.java))
         }
-
         binding.btnChangeAddress.setOnClickListener { goToEditProfile() }
         binding.btnAddAddress.setOnClickListener { goToEditProfile() }
-
         binding.btnConfirmOrder.setOnClickListener { handleConfirmOrder() }
     }
 
     private fun setupObservers() {
-
         lifecycleScope.launch {
             profileViewModel.userProfile.collectLatest { user ->
                 if (user != null && !user.direccion.isNullOrEmpty()) {
@@ -79,7 +75,6 @@ class CheckoutActivity : AppCompatActivity() {
                 }
             }
         }
-
 
         lifecycleScope.launch {
             cartRepository.cartItems.collectLatest { cartItems ->
@@ -98,10 +93,7 @@ class CheckoutActivity : AppCompatActivity() {
     private fun setupAddressView(direccion: String, comuna: String?, region: String?) {
         binding.addressView.isVisible = true
         binding.noAddressView.isVisible = false
-
-        val texto = "$direccion\n${comuna ?: ""}, ${region ?: ""}"
-        binding.tvAddressDetails.text = texto
-
+        binding.tvAddressDetails.text = "$direccion\n${comuna ?: ""}, ${region ?: ""}"
         binding.btnConfirmOrder.isEnabled = true
     }
 
@@ -112,12 +104,9 @@ class CheckoutActivity : AppCompatActivity() {
     }
 
     private fun updateTotals(subtotal: Double) {
-        val shipping = 0.0
-        val total = subtotal + shipping
-
         binding.tvSubtotal.text = String.format(Locale.US, "$%,.0f", subtotal)
         binding.tvShipping.text = "Gratis"
-        binding.tvTotal.text = String.format(Locale.US, "$%,.0f", total)
+        binding.tvTotal.text = String.format(Locale.US, "$%,.0f", subtotal)
     }
 
     private fun handleConfirmOrder() {
@@ -126,17 +115,52 @@ class CheckoutActivity : AppCompatActivity() {
             return
         }
 
+        val user = profileViewModel.userProfile.value
+        if (user == null) {
+            Toast.makeText(this, "Error: Usuario no identificado", Toast.LENGTH_SHORT).show()
+            return
+        }
 
         binding.loadingOverlay.isVisible = true
-
+        binding.btnConfirmOrder.isEnabled = false
 
         lifecycleScope.launch {
-            // TODO: Conectar con OrderRepository cuando configures el endpoint de órdenes en Xano
-            Toast.makeText(this@CheckoutActivity, "Procesando pedido...", Toast.LENGTH_SHORT).show()
-            kotlinx.coroutines.delay(1500) // Simula carga
-            binding.loadingOverlay.isVisible = false
-            Toast.makeText(this@CheckoutActivity, "¡Pedido Exitoso! (Simulado)", Toast.LENGTH_LONG).show()
-            finish()
+            try {
+                val cartItems = cartRepository.cartItems.value
+                val orderItems = cartItems.map {
+                    OrderItem(
+                        productId = it.product.id ?: 0,
+                        quantity = it.quantity,
+                        price = it.product.price
+                    )
+                }
+
+                val request = CreateOrderRequest(
+                    addressId = 0,
+                    totalAmount = currentSubtotal,
+                    status = "por confirmar",
+                    userId = user.id,
+                    items = orderItems
+                )
+
+                val result = orderRepository.createOrder(request)
+                binding.loadingOverlay.isVisible = false
+
+                result.onSuccess { order ->
+                    cartRepository.clearCart()
+                    val intent = Intent(this@CheckoutActivity, OrderSuccessActivity::class.java)
+                    intent.putExtra("ORDER_NUMBER", order.orderNumber)
+                    startActivity(intent)
+                    finish()
+                }.onFailure { e ->
+                    binding.btnConfirmOrder.isEnabled = true
+                    Toast.makeText(this@CheckoutActivity, "Error: ${e.message}", Toast.LENGTH_LONG).show()
+                }
+            } catch (e: Exception) {
+                binding.loadingOverlay.isVisible = false
+                binding.btnConfirmOrder.isEnabled = true
+                Toast.makeText(this@CheckoutActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }

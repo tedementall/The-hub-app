@@ -23,7 +23,7 @@
 
     <item
         android:id="@+id/navigation_profile"
-        android:icon="@drawable/ic_person"
+        android:icon="@drawable/ic_person_outline"
         android:title="Perfil" />
 
 </menu>

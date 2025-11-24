@@ -7,7 +7,6 @@ import kotlinx.coroutines.flow.asStateFlow
 
 object CartRepository {
 
-
     private val _cartItems = MutableStateFlow<List<CartProduct>>(emptyList())
     val cartItems = _cartItems.asStateFlow()
 
@@ -19,7 +18,6 @@ object CartRepository {
 
             existingItem.quantity += quantity
             if (existingItem.quantity <= 0) {
-
                 currentList.remove(existingItem)
             }
         } else if (quantity > 0) {
@@ -27,10 +25,8 @@ object CartRepository {
             currentList.add(CartProduct(product = product, quantity = quantity))
         }
 
-
         _cartItems.value = currentList
     }
-
 
     fun updateItemQuantity(productId: Int, newQuantity: Int) {
         val currentList = _cartItems.value.toMutableList()
@@ -38,16 +34,13 @@ object CartRepository {
 
         if (item != null) {
             if (newQuantity <= 0) {
-
                 currentList.remove(item)
             } else {
-
                 item.quantity = newQuantity
             }
             _cartItems.value = currentList
         }
     }
-
 
     fun removeItemFromCart(productId: Int) {
         val currentList = _cartItems.value.toMutableList()
@@ -55,6 +48,10 @@ object CartRepository {
         _cartItems.value = currentList
     }
 
+
+    fun clearCart() {
+        _cartItems.value = emptyList()
+    }
 
     fun getSubtotal(): Double {
         return _cartItems.value.sumOf { it.product.price * it.quantity }

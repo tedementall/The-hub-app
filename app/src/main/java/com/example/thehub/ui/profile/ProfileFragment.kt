@@ -14,6 +14,7 @@ import com.example.thehub.R
 import com.example.thehub.databinding.FragmentProfileBinding
 import com.example.thehub.ui.login.LoginActivity
 import com.example.thehub.ui.settings.AddProductActivity
+import com.example.thehub.ui.settings.AdminProductListActivity
 import kotlinx.coroutines.launch
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
@@ -29,38 +30,23 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         setupObservers()
         setupClickListeners()
 
-        // Cargar datos al entrar
         viewModel.loadUserProfile()
     }
 
     private fun setupObservers() {
-        // 1. Loading
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.isLoading.collect { isLoading ->
-                binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
-            }
-        }
-
-        // 2. Datos del Usuario
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.userProfile.collect { user ->
                 user?.let {
                     binding.apply {
                         tvUserName.text = it.nombre
                         tvUserEmail.text = it.correo
-
-                        // Rol
                         tvUserRole.text = if (it.esAdministrador) "Administrador" else "Usuario"
 
-                        // --- LÓGICA DE ADMIN ---
-                        // Si es admin, mostramos la tarjeta especial. Si no, se oculta.
                         cardAdminOptions.isVisible = it.esAdministrador
-                        // -----------------------
 
-                        // --- DIRECCIÓN ---
                         if (!it.direccion.isNullOrEmpty()) {
                             val sb = StringBuilder()
-                            sb.append(it.direccion) // Calle
+                            sb.append(it.direccion)
                             if (!it.comuna.isNullOrEmpty()) sb.append("\n${it.comuna}")
                             if (!it.region.isNullOrEmpty()) sb.append(", ${it.region}")
 
@@ -73,7 +59,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             }
         }
 
-        // 3. Errores
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.error.collect { error ->
                 error?.let { Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show() }
@@ -84,16 +69,13 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private fun setupClickListeners() {
         binding.apply {
 
-            // 1. BOTÓN AJUSTES (TUERCA FLOTANTE) CON ANIMACIÓN
             btnSettings.setOnClickListener {
                 try {
-                    // Configurar la animación de deslizamiento suave
                     val navOptions = NavOptions.Builder()
-                        .setEnterAnim(R.anim.slide_in_right)   // Entra desde derecha
-                        .setExitAnim(R.anim.slide_out_left)    // Perfil se va a izquierda
-                        .setPopEnterAnim(R.anim.slide_in_left) // Perfil vuelve desde izquierda
-                        .setPopExitAnim(R.anim.slide_out_right)// Ajustes se va a derecha
-                        // CRÍTICO: Esto elimina Profile del backstack cuando vas a Settings
+                        .setEnterAnim(R.anim.slide_in_right)
+                        .setExitAnim(R.anim.slide_out_left)
+                        .setPopEnterAnim(R.anim.slide_in_left)
+                        .setPopExitAnim(R.anim.slide_out_right)
                         .setPopUpTo(R.id.navigation_profile, inclusive = true)
                         .build()
 
@@ -104,18 +86,31 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 }
             }
 
-            // 2. BOTÓN AGREGAR PRODUCTO (Dentro de tarjeta Admin)
+            btnMyOrders.setOnClickListener {
+                val user = viewModel.userProfile.value
+                if (user != null) {
+                    val intent = Intent(requireContext(), MyOrdersActivity::class.java)
+                    intent.putExtra("USER_ID", user.id)
+                    startActivity(intent)
+                } else {
+                    Toast.makeText(requireContext(), "Esperando datos del perfil...", Toast.LENGTH_SHORT).show()
+                    viewModel.loadUserProfile()
+                }
+            }
+
             btnAddProduct.setOnClickListener {
                 val intent = Intent(requireContext(), AddProductActivity::class.java)
                 startActivity(intent)
             }
 
-            // 3. BOTÓN EDITAR PERFIL
+            btnManageProducts.setOnClickListener {
+                val intent = Intent(requireContext(), AdminProductListActivity::class.java)
+                startActivity(intent)
+            }
+
             btnEditProfile.setOnClickListener {
                 val currentUser = viewModel.userProfile.value
                 val intent = Intent(requireContext(), EditProfileActivity::class.java)
-
-                // Pasamos datos actuales para rellenar inputs
                 if (currentUser != null) {
                     intent.putExtra("NAME", currentUser.nombre)
                     intent.putExtra("ADDRESS", currentUser.direccion)
@@ -123,7 +118,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 startActivity(intent)
             }
 
-            // 4. CERRAR SESIÓN
             btnLogout.setOnClickListener {
                 viewModel.logout()
                 val intent = Intent(requireContext(), LoginActivity::class.java)
