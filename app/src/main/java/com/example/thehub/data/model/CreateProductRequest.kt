@@ -8,5 +8,5 @@ data class CreateProductRequest(
     @SerializedName("price") val price: Double,
     @SerializedName("stock_quantity") val stockQuantity: Int,
     @SerializedName("category") val category: String,
-    @SerializedName("image_url") val imageUrl: List<ProductImage>? = null  // ✅ Cambiar a List<ProductImage>
+    @SerializedName("image_url") val imageUrl: List<ProductImage>? = null
 )

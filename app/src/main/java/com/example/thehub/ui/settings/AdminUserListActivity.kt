@@ -42,11 +42,11 @@ class AdminUserListActivity : AppCompatActivity() {
 
         binding.btnBack.setOnClickListener { finish() }
 
-        // Configuración del adaptador con AMBOS eventos (Editar y Borrar)
+
         adapter = AdminUserAdapter(
             users = emptyList(),
             onEditClick = { user ->
-                // Ahora sí encontrará esta clase porque la pusimos en el archivo correcto arriba
+
                 val intent = Intent(this, AdminEditUserActivity::class.java)
                 intent.putExtra("extra_user", user)
                 startActivity(intent)

@@ -149,7 +149,7 @@ class CheckoutActivity : AppCompatActivity() {
                 result.onSuccess { order ->
                     cartRepository.clearCart()
                     val intent = Intent(this@CheckoutActivity, OrderSuccessActivity::class.java)
-                    intent.putExtra("ORDER_NUMBER", order.orderNumber)
+                    intent.putExtra("ORDER_NUMBER", order.id)
                     startActivity(intent)
                     finish()
                 }.onFailure { e ->

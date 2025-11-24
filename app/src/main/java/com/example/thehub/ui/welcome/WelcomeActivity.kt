@@ -128,7 +128,7 @@ class WelcomeActivity : AppCompatActivity() {
     private fun navigateToLogin() {
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
-        // Transición de deslizamiento (Slide)
+
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
 
 

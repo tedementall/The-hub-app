@@ -1,4 +1,4 @@
-package com.example.thehub.ui.blog
+package com.example.thehub.ui.news
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,7 +16,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class BlogDetailBottomSheet : BottomSheetDialogFragment() {
+class NewsDetailBottomSheet : BottomSheetDialogFragment() {
 
     private var _binding: BottomSheetBlogDetailBinding? = null
     private val binding get() = _binding!!
@@ -25,7 +25,6 @@ class BlogDetailBottomSheet : BottomSheetDialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setStyle(STYLE_NORMAL, R.style.BottomSheetDialogTheme)
     }
 
@@ -42,7 +41,6 @@ class BlogDetailBottomSheet : BottomSheetDialogFragment() {
         setupBottomSheetBehavior()
         news?.let { setupNewsDetails(it) }
     }
-
 
     override fun onStart() {
         super.onStart()
@@ -83,7 +81,6 @@ class BlogDetailBottomSheet : BottomSheetDialogFragment() {
         }
     }
 
-
     private fun setupBottomSheetBehavior() {
         dialog?.setOnShowListener { dialogInterface ->
             val bottomSheetDialog = dialogInterface as? BottomSheetDialog
@@ -91,7 +88,6 @@ class BlogDetailBottomSheet : BottomSheetDialogFragment() {
 
             bottomSheet?.let {
                 val behavior = BottomSheetBehavior.from(it)
-
                 behavior.state = BottomSheetBehavior.STATE_EXPANDED
                 behavior.skipCollapsed = true
             }
@@ -100,15 +96,20 @@ class BlogDetailBottomSheet : BottomSheetDialogFragment() {
 
     private fun setupNewsDetails(item: News) {
         binding.apply {
+
             tvBlogTitle.text = item.title
-            tvBlogContent.text = item.content
+            tvBlogContent.text = item.body
 
-
+            // Fecha - manejo seguro de null
             val sdf = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
-            tvBlogDate.text = sdf.format(Date(item.createdAt))
+            tvBlogDate.text = if (item.createdAt != null) {
+                sdf.format(Date(item.createdAt))
+            } else {
+                "Fecha no disponible"
+            }
 
 
-            item.image?.url?.let { url ->
+            item.cover?.url?.let { url ->
                 Glide.with(requireContext()).load(url).into(ivBlogImage)
             }
 
@@ -122,8 +123,8 @@ class BlogDetailBottomSheet : BottomSheetDialogFragment() {
     }
 
     companion object {
-        fun newInstance(news: News): BlogDetailBottomSheet {
-            return BlogDetailBottomSheet().apply {
+        fun newInstance(news: News): NewsDetailBottomSheet {
+            return NewsDetailBottomSheet().apply {
                 this.news = news
             }
         }
