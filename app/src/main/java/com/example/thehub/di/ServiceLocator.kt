@@ -10,6 +10,7 @@ import com.example.thehub.data.repository.CartRepository
 import com.example.thehub.data.repository.OrderRepository
 import com.example.thehub.data.repository.ProductRepository
 import com.example.thehub.data.repository.UserRepository
+import com.example.thehub.data.repository.BlogRepository
 import com.example.thehub.utils.TokenStore
 
 object ServiceLocator {
@@ -39,4 +40,7 @@ object ServiceLocator {
 
 
     val userRepository: UserRepository by lazy { UserRepository(storeApi) }
+
+    val blogRepository: BlogRepository by lazy { BlogRepository(storeApi) }
+
 }

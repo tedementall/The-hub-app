@@ -15,7 +15,7 @@ class UserRepository(private val api: XanoMainApi) {
         return api.deleteUser(id)
     }
 
-    suspend fun adminUpdateUser(id: Int, updates: Map<String, Any>): User {
+    suspend fun adminUpdateUser(id: Int, updates: Map<String, String>): User {
         return api.adminUpdateUser(id, updates)
     }
 }

@@ -9,6 +9,7 @@ import com.example.thehub.data.model.ProductImage
 import okhttp3.MultipartBody
 import com.example.thehub.data.model.User
 import com.example.thehub.data.model.UserResponse
+import com.example.thehub.data.model.News
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -70,10 +71,13 @@ interface XanoMainApi {
         @Query("user_id") userId: Int
     ): Response<Unit>
 
-    @PATCH("https://x8ki-letl-twmt.n7.xano.io/api:MJq6ok-f/UPDATE_USERS")
+    @POST("https://x8ki-letl-twmt.n7.xano.io/api:MJq6ok-f/UPDATE_USERS/")
     suspend fun adminUpdateUser(
         @Query("user_id") userId: Int,
-        @Body updates: Map<String, Any>
+        @Body updates: Map<String, String>
     ): User
+
+    @GET("news")
+    suspend fun getNews(): List<News>
 
 }

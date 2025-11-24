@@ -9,6 +9,7 @@ import com.example.thehub.databinding.ItemAdminUserBinding
 
 class AdminUserAdapter(
     private var users: List<User>,
+    private val onEditClick: (User) -> Unit, // 👈 NUEVO PARÁMETRO AGREGADO
     private val onDeleteClick: (User) -> Unit
 ) : RecyclerView.Adapter<AdminUserAdapter.UserViewHolder>() {
 
@@ -25,8 +26,8 @@ class AdminUserAdapter(
             tvUserName.text = user.nombre
             tvUserEmail.text = user.correo
 
-
-            if (user.esAdministrador) {
+            // Lógica de roles (usando tus nombres en español)
+            if (user.tipoUsuario == "admin") {
                 tvRole.text = "ADMINISTRADOR"
                 tvRole.setTextColor(Color.parseColor("#3F51B5"))
                 tvRole.background.setTint(Color.parseColor("#E8EAF6"))
@@ -36,7 +37,9 @@ class AdminUserAdapter(
                 tvRole.background.setTint(Color.parseColor("#F5F5F5"))
             }
 
+            // Conectar los botones
             btnDelete.setOnClickListener { onDeleteClick(user) }
+            btnEdit.setOnClickListener { onEditClick(user) } // 👈 USAR EL NUEVO PARÁMETRO
         }
     }
 

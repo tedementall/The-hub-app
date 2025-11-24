@@ -1,5 +1,6 @@
 package com.example.thehub.ui.settings
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
@@ -11,20 +12,17 @@ import com.example.thehub.R
 import com.example.thehub.data.model.User
 import com.example.thehub.databinding.ActivityAdminProductListBinding
 import com.example.thehub.di.ServiceLocator
-import com.example.thehub.utils.TokenStore
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch
 
 class AdminUserListActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAdminProductListBinding
-
     private val userRepository = ServiceLocator.userRepository
     private lateinit var adapter: AdminUserAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityAdminProductListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -32,17 +30,31 @@ class AdminUserListActivity : AppCompatActivity() {
         loadUsers()
     }
 
+    override fun onResume() {
+        super.onResume()
+        loadUsers()
+    }
+
     private fun setupUI() {
-
-        binding.header.findViewById<TextView>(R.id.tvTitleScreen)?.text = "Gestionar Usuarios" // Asegúrate que el ID del TextView en tu include/layout sea correcto, o usa binding si es directo.
-
-
+        // Ajustamos el título
+        val titleView = binding.header.getChildAt(1) as? TextView
+        titleView?.text = "Gestionar Usuarios"
 
         binding.btnBack.setOnClickListener { finish() }
 
-        adapter = AdminUserAdapter(emptyList()) { user ->
-            confirmDelete(user)
-        }
+        // Configuración del adaptador con AMBOS eventos (Editar y Borrar)
+        adapter = AdminUserAdapter(
+            users = emptyList(),
+            onEditClick = { user ->
+                // Ahora sí encontrará esta clase porque la pusimos en el archivo correcto arriba
+                val intent = Intent(this, AdminEditUserActivity::class.java)
+                intent.putExtra("extra_user", user)
+                startActivity(intent)
+            },
+            onDeleteClick = { user ->
+                confirmDelete(user)
+            }
+        )
 
         binding.rvProducts.layoutManager = LinearLayoutManager(this)
         binding.rvProducts.adapter = adapter
@@ -52,11 +64,10 @@ class AdminUserListActivity : AppCompatActivity() {
         lifecycleScope.launch {
             binding.progressBar.visibility = View.VISIBLE
             try {
-
                 val users = userRepository.getAllUsers()
                 adapter.updateList(users)
             } catch (e: Exception) {
-                Toast.makeText(this@AdminUserListActivity, "Error cargando usuarios: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@AdminUserListActivity, "Error cargando usuarios", Toast.LENGTH_SHORT).show()
             } finally {
                 binding.progressBar.visibility = View.GONE
             }
@@ -78,9 +89,7 @@ class AdminUserListActivity : AppCompatActivity() {
         lifecycleScope.launch {
             binding.progressBar.visibility = View.VISIBLE
             try {
-
                 val response = userRepository.deleteUser(user.id)
-
                 if (response.isSuccessful) {
                     Toast.makeText(this@AdminUserListActivity, "Usuario eliminado", Toast.LENGTH_SHORT).show()
                     loadUsers()
