@@ -19,8 +19,14 @@ class BlogFragment : Fragment() {
     private var _binding: FragmentBlogBinding? = null
     private val binding get() = _binding!!
 
+    // Inyección del repositorio desde ServiceLocator
     private val repository by lazy { ServiceLocator.blogRepository }
-    private val adapter = BlogAdapter()
+
+    // Inicializamos el Adapter con la acción de click para abrir el BottomSheet
+    private val adapter = BlogAdapter { selectedNews ->
+        val bottomSheet = BlogDetailBottomSheet.newInstance(selectedNews)
+        bottomSheet.show(parentFragmentManager, "BlogDetailBottomSheet")
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,15 +40,18 @@ class BlogFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // 1. Ajuste para que el título no choque con la barra de estado (cámara)
         ViewCompat.setOnApplyWindowInsetsListener(binding.mainContainer) { v, insets ->
             val bars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.updatePadding(top = bars.top)
             insets
         }
 
+        // 2. Configurar RecyclerView
         binding.rvBlog.layoutManager = LinearLayoutManager(context)
         binding.rvBlog.adapter = adapter
 
+        // 3. Cargar datos
         loadNews()
     }
 
