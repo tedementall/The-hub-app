@@ -15,6 +15,7 @@ import com.example.thehub.databinding.FragmentProfileBinding
 import com.example.thehub.ui.login.LoginActivity
 import com.example.thehub.ui.settings.AddProductActivity
 import com.example.thehub.ui.settings.AdminProductListActivity
+import com.example.thehub.ui.settings.AdminUserListActivity
 import kotlinx.coroutines.launch
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
@@ -105,6 +106,11 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
             btnManageProducts.setOnClickListener {
                 val intent = Intent(requireContext(), AdminProductListActivity::class.java)
+                startActivity(intent)
+            }
+
+            btnManageUsers.setOnClickListener {
+                val intent = Intent(requireContext(), AdminUserListActivity::class.java)
                 startActivity(intent)
             }
 

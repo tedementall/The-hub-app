@@ -16,7 +16,7 @@ object ImageUtils {
         uris.forEach { uri ->
             val file = getFileFromUri(context, uri)
             if (file != null) {
-                // "content" es el nombre del input que definimos en el endpoint de Xano
+
                 val requestFile = file.asRequestBody("image/*".toMediaTypeOrNull())
                 val part = MultipartBody.Part.createFormData("content", file.name, requestFile)
                 parts.add(part)

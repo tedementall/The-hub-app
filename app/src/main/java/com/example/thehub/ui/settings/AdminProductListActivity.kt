@@ -32,7 +32,7 @@ class AdminProductListActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        // Recargar la lista al volver de editar
+
         loadProducts()
     }
 
@@ -44,7 +44,7 @@ class AdminProductListActivity : AppCompatActivity() {
         adapter = AdminProductAdapter(
             products = emptyList(),
             onEditClick = { product ->
-                // Abrir pantalla de edición
+
                 val intent = Intent(this, AddProductActivity::class.java)
                 intent.putExtra("extra_product", product)
                 startActivity(intent)
@@ -60,8 +60,7 @@ class AdminProductListActivity : AppCompatActivity() {
         lifecycleScope.launch {
             binding.progressBar.visibility = View.VISIBLE
             try {
-                // Aquí usamos tu método existente getProducts (sin filtros trae todo)
-                // Ajusta los parámetros según tu API si necesitas paginación
+
                 val products = productRepository.getProducts(limit = 100, offset = 0, q = null, category = null)
                 adapter.updateList(products)
             } catch (e: Exception) {

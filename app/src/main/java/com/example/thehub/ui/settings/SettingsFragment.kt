@@ -22,12 +22,12 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
     private fun setupClickListeners() {
         binding.apply {
-            // BOTÓN ATRÁS
+
             btnBack.setOnClickListener {
                 findNavController().navigateUp()
             }
 
-            // Opciones
+
             rowNotifications.setOnClickListener {
                 Toast.makeText(requireContext(), "Configuración de notificaciones", Toast.LENGTH_SHORT).show()
             }

@@ -27,7 +27,7 @@ class AdminProductAdapter(
             tvPrice.text = "$ ${product.price}"
             chipStock.text = "Stock: ${product.stockQuantity}"
 
-            // Cargar imagen (Asumiendo que tienes Glide, si no usa tu ImageUtils)
+
             val imgUrl = product.imageUrl?.firstOrNull()?.url
             if (!imgUrl.isNullOrEmpty()) {
                 Glide.with(root.context).load(imgUrl).into(ivProduct)
