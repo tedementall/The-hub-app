@@ -15,12 +15,12 @@ class NewsAdapter(
 
     inner class NewsViewHolder(private val binding: ItemNewsBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(news: News) {
-
             binding.tvNewsTitle.text = news.title
             binding.tvNewsContent.text = news.body
 
-            // Cargar imagen
-            val imageUrl = news.cover?.url
+
+            val imageUrl = news.cover?.firstOrNull()?.url
+
             if (!imageUrl.isNullOrEmpty()) {
                 binding.ivNewsImage.load(imageUrl) {
                     crossfade(true)

@@ -8,13 +8,9 @@ import okhttp3.MultipartBody
 
 class NewsRepository(private val api: XanoMainApi) {
 
+
     suspend fun getNews(): List<News> {
-        return try {
-            api.getNews()
-        } catch (e: Exception) {
-            e.printStackTrace()
-            emptyList()
-        }
+        return api.getNews()
     }
 
     suspend fun uploadNewsImage(parts: List<MultipartBody.Part>): ProductImage? {

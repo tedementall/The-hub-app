@@ -7,5 +7,5 @@ data class News(
     @SerializedName("created_at") val createdAt: Long?,
     val title: String,
     val body: String,
-    val cover: ProductImage?
+    val cover: List<ProductImage>?
 )

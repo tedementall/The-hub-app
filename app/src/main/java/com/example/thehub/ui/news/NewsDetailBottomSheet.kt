@@ -100,7 +100,7 @@ class NewsDetailBottomSheet : BottomSheetDialogFragment() {
             tvBlogTitle.text = item.title
             tvBlogContent.text = item.body
 
-            // Fecha - manejo seguro de null
+
             val sdf = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
             tvBlogDate.text = if (item.createdAt != null) {
                 sdf.format(Date(item.createdAt))
@@ -109,7 +109,7 @@ class NewsDetailBottomSheet : BottomSheetDialogFragment() {
             }
 
 
-            item.cover?.url?.let { url ->
+            item.cover?.firstOrNull()?.url?.let { url ->
                 Glide.with(requireContext()).load(url).into(ivBlogImage)
             }
 
