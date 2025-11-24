@@ -44,7 +44,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
             val bottomSheet = ProductDetailBottomSheet.newInstance(
                 product = product,
                 onAddToCart = { selectedProduct, quantity ->
-                    // Acción al agregar al carrito
+
                     viewModel.addToCart(selectedProduct, quantity)
                 }
             )
@@ -71,7 +71,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         svSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 viewModel.searchProducts(query = query ?: "")
-                svSearch.clearFocus() // Ocultar teclado
+                svSearch.clearFocus()
                 return true
             }
 
@@ -125,7 +125,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
                         viewModel.searchProducts(category = categoryName)
                     }
                 } else {
-                    // Si se desmarca todo, volver a activar "Todos" por defecto
+
                     if (chipGroup.checkedChipId == View.NO_ID) {
                         allChip?.isChecked = true
                         viewModel.searchProducts(category = null)

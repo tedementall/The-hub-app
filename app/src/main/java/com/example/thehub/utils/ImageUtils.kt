@@ -16,13 +16,23 @@ object ImageUtils {
         uris.forEach { uri ->
             val file = getFileFromUri(context, uri)
             if (file != null) {
-
                 val requestFile = file.asRequestBody("image/*".toMediaTypeOrNull())
                 val part = MultipartBody.Part.createFormData("content", file.name, requestFile)
                 parts.add(part)
             }
         }
         return parts
+    }
+
+    fun createImagePart(context: Context, uri: Uri, fieldName: String): MultipartBody.Part? {
+        return try {
+            val file = getFileFromUri(context, uri) ?: return null
+            val requestFile = file.asRequestBody("image/*".toMediaTypeOrNull())
+            MultipartBody.Part.createFormData(fieldName, file.name, requestFile)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
     }
 
     private fun getFileFromUri(context: Context, uri: Uri): File? {

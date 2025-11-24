@@ -4,7 +4,7 @@ import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
-@Parcelize // 1. Importante para pasar el objeto entre pantallas
+@Parcelize
 data class User(
     val id: Int,
 
@@ -20,7 +20,6 @@ data class User(
     @SerializedName("rut")
     val rut: String? = null,
 
-    // Estos coinciden con el JSON, no necesitan SerializedName si se llaman igual
     val region: String? = null,
     val comuna: String? = null,
 
@@ -30,13 +29,11 @@ data class User(
     @SerializedName("user_type")
     val tipoUsuario: String? = null,
 
-    // 2. Agregamos el campo status para la gestión de usuarios
     @SerializedName("status")
     val estado: String? = null
 
 ) : Parcelable {
 
-    // Lógica para saber si es admin
     val esAdministrador: Boolean
         get() = tipoUsuario == "admin" || tipoUsuario == "administrator"
 }

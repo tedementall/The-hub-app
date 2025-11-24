@@ -11,6 +11,7 @@ import com.example.thehub.data.repository.OrderRepository
 import com.example.thehub.data.repository.ProductRepository
 import com.example.thehub.data.repository.UserRepository
 import com.example.thehub.data.repository.BlogRepository
+import com.example.thehub.data.repository.NewsRepository
 import com.example.thehub.utils.TokenStore
 
 object ServiceLocator {
@@ -25,7 +26,6 @@ object ServiceLocator {
 
     private val authApi: XanoAuthApi by lazy { RetrofitClient.auth() }
 
-
     private val storeApi: XanoMainApi by lazy { RetrofitClient.store(tokenProvider) }
 
     val uploadService: UploadService by lazy { RetrofitClient.upload(tokenProvider) }
@@ -38,9 +38,9 @@ object ServiceLocator {
 
     val orderRepository: OrderRepository by lazy { OrderRepository(storeApi) }
 
-
     val userRepository: UserRepository by lazy { UserRepository(storeApi) }
 
     val blogRepository: BlogRepository by lazy { BlogRepository(storeApi) }
 
+    val newsRepository: NewsRepository by lazy { NewsRepository(storeApi) }
 }

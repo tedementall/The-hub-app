@@ -90,7 +90,7 @@ class EditProfileActivity : AppCompatActivity() {
         if (!currentName.isNullOrEmpty()) binding.etName.setText(currentName)
         if (!currentAddress.isNullOrEmpty()) binding.etAddressDetail.setText(currentAddress)
 
-        // Pre-carga de selectores
+
         if (!currentRegion.isNullOrEmpty()) {
             selectedRegion = currentRegion
             binding.autoCompleteRegion.setText(currentRegion, false)

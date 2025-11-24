@@ -107,7 +107,7 @@
                 android:layout_height="wrap_content"
                 android:text="Borrar"
                 android:textColor="#E91E63"
-                app:icon="@drawable/ic_delete"
+                app:icon="@drawable/ic_delete1"
                 app:iconTint="#E91E63" />
         </LinearLayout>
 

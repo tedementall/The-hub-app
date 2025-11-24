@@ -273,7 +273,7 @@
                 android:textColor="#FF0000"
                 android:visibility="gone"
                 app:cornerRadius="28dp"
-                app:icon="@drawable/ic_delete"
+                app:icon="@drawable/ic_delete1"
                 app:iconGravity="textStart"
                 app:iconTint="#FF0000"
                 app:strokeColor="#FF0000"

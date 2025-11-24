@@ -25,9 +25,9 @@
 
     <fragment
         android:id="@+id/navigation_blog"
-        android:name="com.example.thehub.ui.blog.BlogFragment"
+        android:name="com.example.thehub.ui.news.NewsFragment"
         android:label="Blog"
-        tools:layout="@layout/fragment_blog" />
+        tools:layout="@layout/fragment_news" />
 
     <fragment
         android:id="@+id/navigation_profile"

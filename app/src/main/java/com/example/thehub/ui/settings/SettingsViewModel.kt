@@ -13,7 +13,7 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
 
     private val authRepository = ServiceLocator.authRepository
 
-    // Estado para saber si es admin (empieza en falso por seguridad)
+
     private val _isAdmin = MutableStateFlow(false)
     val isAdmin: StateFlow<Boolean> = _isAdmin
 

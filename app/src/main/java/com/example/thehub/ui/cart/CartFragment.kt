@@ -74,7 +74,7 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
 
         viewLifecycleOwner.lifecycleScope.launch {
             cartRepository.cartItems.collectLatest { cartItems ->
-                // Actualizar el adapter
+
                 cartAdapter.submitList(cartItems)
 
 

@@ -52,7 +52,7 @@ class ProductRepository(private val api: XanoMainApi) {
 
     suspend fun editProduct(token: String, id: Int, request: CreateProductRequest): Product? {
         return try {
-            // Asumiendo que tu variable de API se llama 'api'
+
             api.editProduct(id, request)
         } catch (e: Exception) {
             e.printStackTrace()

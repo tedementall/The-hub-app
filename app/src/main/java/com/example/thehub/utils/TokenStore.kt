@@ -51,7 +51,7 @@ object TokenStore {
             .edit()
             .remove(KEY_TOKEN)
             .remove(KEY_LOGGED)
-            .remove(KEY_USER_NAME) // <--- También borramos el nombre
+            .remove(KEY_USER_NAME)
             .apply()
     }
 }
