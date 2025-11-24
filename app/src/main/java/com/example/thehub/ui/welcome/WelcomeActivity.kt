@@ -19,18 +19,18 @@ class WelcomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityWelcomeBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        // 1. Instalar Splash Screen nativo (Siempre va primero)
+
         val splashScreen = installSplashScreen()
 
         super.onCreate(savedInstanceState)
 
-        // 2. Verificar si ya tiene sesión iniciada
+
         if (TokenStore.isLoggedIn(this)) {
             goToHomeAndFinish()
             return
         }
 
-        // 3. Cargar el diseño
+
         binding = ActivityWelcomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -39,7 +39,7 @@ class WelcomeActivity : AppCompatActivity() {
     }
 
     private fun setupAnimations() {
-        // Animación del Logo (Efecto Rebote)
+
         binding.ivLogoWelcome.apply {
             alpha = 0f
             scaleX = 0.3f
@@ -53,7 +53,7 @@ class WelcomeActivity : AppCompatActivity() {
                 .start()
         }
 
-        // Animación de la Tarjeta Principal (Sube suavemente)
+
         binding.cardMain.apply {
             translationY = 100f
             alpha = 0f
@@ -66,7 +66,7 @@ class WelcomeActivity : AppCompatActivity() {
                 .start()
         }
 
-        // Animación del Botón (Entra al final)
+
         binding.btnGetStarted.apply {
             translationY = 100f
             alpha = 0f
@@ -79,7 +79,7 @@ class WelcomeActivity : AppCompatActivity() {
                 .start()
         }
 
-        // Animación sutil de los círculos de fondo (si existen)
+
         animateDecorativeCircles()
     }
 
@@ -90,28 +90,28 @@ class WelcomeActivity : AppCompatActivity() {
             )
             circleDecor1?.let {
                 val animator1 = ObjectAnimator.ofFloat(it, "rotation", 0f, 360f).apply {
-                    duration = 25000 // Rotación muy lenta
+                    duration = 25000
                     repeatCount = ObjectAnimator.INFINITE
                     interpolator = LinearInterpolator()
                 }
                 animator1.start()
             }
         } catch (e: Exception) {
-            // Ignoramos si no encuentra las vistas decorativas
+
         }
     }
 
     private fun setupListeners() {
-        // BOTÓN "COMENZAR" - RESPUESTA INSTANTÁNEA
+
         binding.btnGetStarted.setOnClickListener { view ->
 
-            // 1. Lanzamos la animación visual (Solo para que se vea bonito)
+
             view.animate()
                 .scaleX(0.95f)
                 .scaleY(0.95f)
-                .setDuration(70) // Muy rápido
+                .setDuration(70)
                 .withEndAction {
-                    // Restauramos el tamaño visualmente
+
                     view.animate()
                         .scaleX(1f)
                         .scaleY(1f)
@@ -120,8 +120,7 @@ class WelcomeActivity : AppCompatActivity() {
                 }
                 .start()
 
-            // 2. ¡NAVEGAMOS YA!
-            // No esperamos a que termine la animación. El cambio de pantalla es inmediato.
+
             navigateToLogin()
         }
     }
@@ -132,15 +131,14 @@ class WelcomeActivity : AppCompatActivity() {
         // Transición de deslizamiento (Slide)
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
 
-        // Opcional: finish() si no quieres que puedan volver atrás a la bienvenida
-        // finish()
+
     }
 
     private fun goToHomeAndFinish() {
         val intent = Intent(this, HomeActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         startActivity(intent)
-        // Transición suave también para el auto-login
+
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         finish()
     }

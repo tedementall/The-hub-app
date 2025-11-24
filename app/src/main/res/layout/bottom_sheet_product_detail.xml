@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/bg_bottom_sheet_glass"
-    android:paddingBottom="24dp">
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_bottom_sheet_glass">
 
-    <!-- Handle del bottom sheet -->
     <View
         android:id="@+id/bottomSheetHandle"
         android:layout_width="40dp"
@@ -18,220 +17,231 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Botón de cerrar -->
     <ImageView
         android:id="@+id/ivClose"
         android:layout_width="32dp"
         android:layout_height="32dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/bg_close_button"
         android:contentDescription="Cerrar"
         android:padding="6dp"
         android:src="@drawable/ic_close"
+        android:elevation="4dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/bottomSheetHandle"
-        app:layout_constraintBottom_toBottomOf="@id/bottomSheetHandle"
+        app:layout_constraintTop_toTopOf="parent"
         app:tint="@color/text_primary" />
 
-    <!-- ViewPager2 para galería de imágenes -->
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cardImageGallery"
-        android:layout_width="0dp"
-        android:layout_height="250dp"
-        android:layout_marginHorizontal="24dp"
-        android:layout_marginTop="24dp"
-        app:cardCornerRadius="28dp"
-        app:cardElevation="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/bottomSheetHandle"
-        app:strokeWidth="0dp">
-
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/viewPagerImages"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <!-- Overlay para glassmorphism -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_image_overlay" />
-
-        <!-- Indicador de página -->
-        <LinearLayout
-            android:id="@+id/dotsIndicator"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center_horizontal"
-            android:layout_marginBottom="12dp"
-            android:orientation="horizontal"
-            android:padding="8dp"
-            android:background="@drawable/bg_dots_container" />
-
-        <!-- Contador de imágenes -->
-        <TextView
-            android:id="@+id/tvImageCounter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top|end"
-            android:layout_margin="12dp"
-            android:background="@drawable/bg_image_counter"
-            android:fontFamily="sans-serif-medium"
-            android:paddingHorizontal="12dp"
-            android:paddingVertical="6dp"
-            android:textColor="@color/white"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            tools:text="1/3" />
-
-    </com.google.android.material.card.MaterialCardView>
-
-    <!-- Nombre del producto -->
-    <TextView
-        android:id="@+id/tvProductName"
-        android:layout_width="0dp"
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="24dp"
-        android:layout_marginTop="20dp"
-        android:fontFamily="sans-serif-medium"
-        android:textColor="@color/text_primary"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cardImageGallery"
-        tools:text="Cargador Ugreen Nexode 30W" />
-
-    <!-- Precio -->
-    <TextView
-        android:id="@+id/tvProductPrice"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/bg_price_tag"
-        android:fontFamily="sans-serif-medium"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="8dp"
-        android:textColor="@color/purple_700"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvProductName"
-        tools:text="$59,990" />
-
-    <!-- Stock -->
-    <TextView
-        android:id="@+id/tvStock"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:fontFamily="sans-serif"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@id/tvProductPrice"
-        app:layout_constraintStart_toEndOf="@id/tvProductPrice"
-        app:layout_constraintTop_toTopOf="@id/tvProductPrice"
-        tools:text="Stock disponible: 15 unidades"
-        tools:textColor="@color/stock_available" />
-
-    <!-- Descripción -->
-    <TextView
-        android:id="@+id/tvProductDescription"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="24dp"
-        android:layout_marginTop="16dp"
-        android:lineSpacingExtra="4dp"
-        android:textColor="@color/text_secondary"
-        android:textSize="15sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvProductPrice"
-        tools:text="Cargador compacto y potente cargador, ideal para dispositivos móviles y tablets." />
-
-    <!-- Separador -->
-    <View
-        android:id="@+id/divider"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:layout_marginHorizontal="24dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/bg_divider"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvProductDescription" />
-
-    <!-- Selector de cantidad con glassmorphism -->
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cardQuantity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="20dp"
-        app:cardBackgroundColor="@color/glass_background"
-        app:cardCornerRadius="20dp"
-        app:cardElevation="0dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/divider"
-        app:strokeColor="@color/glass_border"
-        app:strokeWidth="1dp">
+        app:layout_constrainedHeight="true"
+        app:layout_constraintVertical_bias="0.0"
+        android:fillViewport="true"
+        android:scrollbars="none"
+        app:layout_constraintBottom_toTopOf="@id/footerContainer"
+        app:layout_constraintTop_toBottomOf="@id/ivClose">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:padding="8dp">
+            android:orientation="vertical"
+            android:paddingBottom="24dp">
 
-            <ImageButton
-                android:id="@+id/btnDecrease"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:background="@drawable/bg_quantity_button"
-                android:contentDescription="Disminuir cantidad"
-                android:src="@drawable/ic_minus"
-                app:tint="@color/purple_700" />
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardImageGallery"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginTop="24dp"
+                app:cardCornerRadius="28dp"
+                app:cardElevation="8dp"
+                app:strokeWidth="0dp">
+
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/viewPagerImages"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_image_overlay" />
+
+                <LinearLayout
+                    android:id="@+id/dotsIndicator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:layout_marginBottom="12dp"
+                    android:background="@drawable/bg_dots_container"
+                    android:orientation="horizontal"
+                    android:padding="8dp" />
+
+                <TextView
+                    android:id="@+id/tvImageCounter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top|end"
+                    android:layout_margin="12dp"
+                    android:background="@drawable/bg_image_counter"
+                    android:fontFamily="sans-serif-medium"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="6dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    tools:text="1/3" />
+            </com.google.android.material.card.MaterialCardView>
 
             <TextView
-                android:id="@+id/tvQuantity"
-                android:layout_width="48dp"
+                android:id="@+id/tvProductName"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginTop="20dp"
+                android:fontFamily="sans-serif-medium"
                 android:textColor="@color/text_primary"
-                android:textSize="18sp"
+                android:textSize="24sp"
                 android:textStyle="bold"
-                tools:text="1" />
+                tools:text="Cargador Ugreen Nexode 30W" />
 
-            <ImageButton
-                android:id="@+id/btnIncrease"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:background="@drawable/bg_quantity_button"
-                android:contentDescription="Aumentar cantidad"
-                android:src="@drawable/ic_plus"
-                app:tint="@color/purple_700" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginTop="8dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tvProductPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_price_tag"
+                    android:fontFamily="sans-serif-medium"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="8dp"
+                    android:textColor="@color/purple_700"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    tools:text="$59,990" />
+
+                <TextView
+                    android:id="@+id/tvStock"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:fontFamily="sans-serif"
+                    android:textSize="14sp"
+                    tools:text="Stock disponible: 15 unidades"
+                    tools:textColor="@color/stock_available" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvProductDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginTop="16dp"
+                android:lineSpacingExtra="4dp"
+                android:textColor="@color/text_secondary"
+                android:textSize="15sp"
+                tools:text="Cargador compacto y potente cargador... (texto muy largo)..." />
+
         </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
+    </androidx.core.widget.NestedScrollView>
 
-    <!-- Botón agregar al carrito -->
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnAddToCart"
-        android:layout_width="0dp"
-        android:layout_height="56dp"
-        android:layout_marginHorizontal="24dp"
-        android:layout_marginTop="24dp"
-        android:fontFamily="sans-serif-medium"
-        android:text="Agregar al carrito"
-        android:textAllCaps="false"
-        android:textSize="16sp"
-        app:cornerRadius="28dp"
-        app:icon="@drawable/ic_cart_add"
-        app:iconGravity="textStart"
-        app:iconPadding="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cardQuantity"
-        style="@+id/btnAddToCart" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/footerContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_bottom_sheet_glass"
+        android:elevation="16dp"
+        android:paddingBottom="24dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bg_divider"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardQuantity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="20dp"
+            app:cardBackgroundColor="@color/glass_background"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/btnAddToCart"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/btnAddToCart"
+            app:strokeColor="@color/glass_border"
+            app:strokeWidth="1dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="4dp">
+
+                <ImageButton
+                    android:id="@+id/btnDecrease"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:background="@drawable/bg_quantity_button"
+                    android:contentDescription="Disminuir"
+                    android:src="@drawable/ic_minus"
+                    app:tint="@color/purple_700" />
+
+                <TextView
+                    android:id="@+id/tvQuantity"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textColor="@color/text_primary"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    tools:text="1" />
+
+                <ImageButton
+                    android:id="@+id/btnIncrease"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:background="@drawable/bg_quantity_button"
+                    android:contentDescription="Aumentar"
+                    android:src="@drawable/ic_plus"
+                    app:tint="@color/purple_700" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnAddToCart"
+            style="@+id/btnAddToCart"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="sans-serif-medium"
+            android:text="Agregar"
+            android:textAllCaps="false"
+            android:textSize="16sp"
+            app:cornerRadius="28dp"
+            app:icon="@drawable/ic_cart_add"
+            app:iconGravity="textStart"
+            app:iconPadding="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/cardQuantity"
+            app:layout_constraintTop_toBottomOf="@id/divider" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

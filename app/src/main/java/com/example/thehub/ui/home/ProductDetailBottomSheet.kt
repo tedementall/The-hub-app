@@ -10,7 +10,7 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.viewpager2.widget.ViewPager2
-import com.example.thehub.R // <--- ESTA LÍNEA ES CRUCIAL PARA SOLUCIONAR EL ERROR DE 'R'
+import com.example.thehub.R
 import com.example.thehub.data.model.Product
 import com.example.thehub.databinding.BottomSheetProductDetailBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -26,13 +26,12 @@ class ProductDetailBottomSheet : BottomSheetDialogFragment() {
     private var product: Product? = null
     private var onAddToCart: ((Product, Int) -> Unit)? = null
 
-    // Asegúrate de tener esta clase ProductImageAdapter creada en tu proyecto
     private val imageAdapter = ProductImageAdapter()
     private val dots = mutableListOf<ImageView>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // Asegúrate de que este estilo exista en themes.xml
+
         setStyle(STYLE_NORMAL, R.style.BottomSheetDialogTheme)
     }
 
@@ -119,7 +118,7 @@ class ProductDetailBottomSheet : BottomSheetDialogFragment() {
             tvProductPrice.text = "$${String.format("%,.0f", product.price)}"
             tvStock.text = "Stock disponible: ${product.stockQuantity} unidades"
 
-            // Estos colores deben existir en colors.xml
+
             val stockColor = when {
                 product.stockQuantity == 0 -> ContextCompat.getColor(requireContext(), R.color.stock_out)
                 product.stockQuantity < 5 -> ContextCompat.getColor(requireContext(), R.color.stock_low)
@@ -209,7 +208,7 @@ class ProductDetailBottomSheet : BottomSheetDialogFragment() {
 
         for (i in 0 until count) {
             val dot = ImageView(requireContext()).apply {
-                // Estos drawables deben existir
+
                 setImageResource(if (i == 0) R.drawable.dot_active else R.drawable.dot_inactive)
                 val params = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT,

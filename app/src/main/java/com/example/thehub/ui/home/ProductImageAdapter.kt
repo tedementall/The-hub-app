@@ -12,10 +12,6 @@ import com.example.thehub.R
 import com.example.thehub.data.model.ProductImage
 import com.example.thehub.utils.asVaultUrl
 
-/**
- * Adapter para la galería de imágenes del producto
- * Usa ViewPager2 para swipe entre imágenes
- */
 class ProductImageAdapter : ListAdapter<ProductImage, ProductImageAdapter.ImageViewHolder>(DIFF) {
 
     companion object {

@@ -52,15 +52,14 @@ class LoginActivity : AppCompatActivity() {
                         return@launch
                     }
 
-                    // Verificamos que el token exista antes de intentar guardarlo
+
                     val token = response.authToken
 
                     if (!token.isNullOrEmpty()) {
-                        // 1. Guardar Token
+
                         TokenStore.save(this@LoginActivity, token)
 
-                        // 2. Guardar Nombre (NUEVO)
-                        // Esto permite que el HomeFragment diga "Hola, [Nombre]"
+
                         TokenStore.saveName(this@LoginActivity, response.nombre)
 
                         Toast.makeText(this@LoginActivity, "Bienvenido ${response.nombre}", Toast.LENGTH_SHORT).show()

@@ -22,29 +22,28 @@ class MainActivity : AppCompatActivity() {
         navView.setOnItemSelectedListener { item ->
             val currentDestId = navController.currentDestination?.id
 
-            // Si tocamos el ítem de Perfil
+
             if (item.itemId == R.id.navigation_profile) {
-                // Si estamos en Settings, hacemos pop
+
                 if (currentDestId == R.id.navigation_settings) {
                     navController.popBackStack(R.id.navigation_profile, false)
                     return@setOnItemSelectedListener true
                 }
 
-                // Si ya estamos en Profile, no hacemos nada
+
                 if (currentDestId == R.id.navigation_profile) {
                     return@setOnItemSelectedListener true
                 }
             }
 
-            // Para cualquier otro caso, navegación normal
-            // pero SIN guardar estado
+
             val navOptions = NavOptions.Builder()
                 .setLaunchSingleTop(true)
-                .setRestoreState(false) // No restaurar estado
+                .setRestoreState(false) //
                 .setPopUpTo(
                     navController.graph.startDestinationId,
                     inclusive = false,
-                    saveState = false // No guardar estado
+                    saveState = false
                 )
                 .build()
 

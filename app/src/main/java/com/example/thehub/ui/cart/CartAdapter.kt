@@ -53,7 +53,7 @@ class CartAdapter(
             val imageUrl = product.imageUrl?.firstOrNull()?.path.asVaultUrl()
             Glide.with(itemView)
                 .load(imageUrl)
-                .placeholder(R.drawable.ic_placeholder) // Asegúrate de tener este icono o cámbialo
+                .placeholder(R.drawable.ic_placeholder)
                 .into(binding.ivThumb)
 
 

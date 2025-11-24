@@ -23,13 +23,11 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
 
             if (!token.isNullOrEmpty()) {
                 try {
-                    // Llamamos a la API. Esto devuelve un objeto 'LoginResponse?'
+
                     val user = authRepository.getUserProfile(token)
 
                     if (user != null) {
-                        // ¡AQUÍ ESTÁ LA CLAVE!
-                        // Usamos la propiedad calculada que ya escribiste en LoginResponse.kt
-                        // Ella sola revisa si user_type es "admin" o "administrator"
+
                         _isAdmin.value = user.esAdministrador
                     } else {
                         _isAdmin.value = false
