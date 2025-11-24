@@ -13,7 +13,7 @@ import com.example.thehub.data.model.OrderItem
 import com.example.thehub.data.repository.CartRepository
 import com.example.thehub.databinding.ActivityCheckoutBinding
 import com.example.thehub.di.ServiceLocator
-import com.example.thehub.ui.profile.EditProfileActivity // Para agregar dirección
+import com.example.thehub.ui.profile.EditProfileActivity
 import com.example.thehub.ui.profile.ProfileViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -26,7 +26,7 @@ class CheckoutActivity : AppCompatActivity() {
     private val cartRepository: CartRepository = ServiceLocator.cartRepository
     private val checkoutAdapter = CheckoutSummaryAdapter()
 
-    // Variable simple para validar
+
     private var hasValidAddress: Boolean = false
     private var currentSubtotal: Double = 0.0
 
@@ -40,7 +40,7 @@ class CheckoutActivity : AppCompatActivity() {
         setupObservers()
         setupClickListeners()
 
-        // Cargar datos
+
         profileViewModel.loadUserProfile()
     }
 
@@ -54,7 +54,7 @@ class CheckoutActivity : AppCompatActivity() {
     }
 
     private fun setupClickListeners() {
-        // Ambos botones llevan a Editar Perfil para poner la dirección
+
         val goToEditProfile = {
             val intent = Intent(this, EditProfileActivity::class.java)
             startActivity(intent)
@@ -67,7 +67,7 @@ class CheckoutActivity : AppCompatActivity() {
     }
 
     private fun setupObservers() {
-        // 1. Observar Dirección del Usuario
+
         lifecycleScope.launch {
             profileViewModel.userProfile.collectLatest { user ->
                 if (user != null && !user.direccion.isNullOrEmpty()) {
@@ -80,7 +80,7 @@ class CheckoutActivity : AppCompatActivity() {
             }
         }
 
-        // 2. Observar Carrito
+
         lifecycleScope.launch {
             cartRepository.cartItems.collectLatest { cartItems ->
                 checkoutAdapter.submitList(cartItems)
@@ -126,11 +126,10 @@ class CheckoutActivity : AppCompatActivity() {
             return
         }
 
-        // NOTA: Aquí iría la lógica de crear orden.
-        // De momento solo mostramos un mensaje.
+
         binding.loadingOverlay.isVisible = true
 
-        // Simulación
+
         lifecycleScope.launch {
             // TODO: Conectar con OrderRepository cuando configures el endpoint de órdenes en Xano
             Toast.makeText(this@CheckoutActivity, "Procesando pedido...", Toast.LENGTH_SHORT).show()

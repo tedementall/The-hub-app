@@ -4,45 +4,211 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_login_gradient"> <ImageView
-    android:id="@+id/ivLogoWelcome"
-    android:layout_width="120dp"
-    android:layout_height="120dp"
-    android:src="@drawable/ic_thehub_logo"
-    app:layout_constraintBottom_toTopOf="@+id/tvWelcomeTitle"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintVertical_bias="0.3" />
+    android:background="@drawable/bg_login_gradient">
 
-    <TextView
-        android:id="@+id/tvWelcomeTitle"
+    <View
+        android:id="@+id/circleDecor1"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:alpha="0.3"
+        android:background="@drawable/bg_circle_blur"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="-50dp"
+        android:layout_marginEnd="-50dp"/>
+
+    <View
+        android:id="@+id/circleDecor2"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:alpha="0.25"
+        android:background="@drawable/bg_circle_blur_2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="-30dp"
+        android:layout_marginBottom="150dp"/>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardMain"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="32dp"
-        android:fontFamily="sans-serif-medium"
-        android:text="Descubre\ntu Hub ideal"
-        android:textAlignment="center"
-        android:textColor="@color/black"
-        android:textSize="34sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginHorizontal="24dp"
+        android:background="@drawable/bg_glass_card"
+        android:elevation="0dp"
+        app:cardElevation="0dp"
+        app:cardCornerRadius="32dp"
+        app:strokeWidth="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnGetStarted"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.45">
 
-    <TextView
-        android:id="@+id/tvSubtitle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:alpha="0.7"
-        android:text="Gestiona tus productos y pedidos en un solo lugar con la mejor experiencia."
-        android:textAlignment="center"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="@+id/tvWelcomeTitle"
-        app:layout_constraintStart_toStartOf="@+id/tvWelcomeTitle"
-        app:layout_constraintTop_toBottomOf="@+id/tvWelcomeTitle" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_glass_card"
+            android:padding="32dp">
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardLogo"
+                android:layout_width="110dp"
+                android:layout_height="110dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="55dp"
+                app:cardElevation="12dp"
+                app:strokeWidth="0dp"
+                android:outlineAmbientShadowColor="#D65DB1"
+                android:outlineSpotShadowColor="#D65DB1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/ivLogoWelcome"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="24dp"
+                    android:src="@drawable/ic_thehub_logo"
+                    android:scaleType="centerInside"/>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:id="@+id/tvWelcomeTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                android:fontFamily="@font/google_sans_bold"
+                android:text="Descubre\ntu Hub ideal"
+                android:textAlignment="center"
+                android:textColor="#2D2D2D"
+                android:textSize="34sp"
+                android:letterSpacing="-0.02"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cardLogo" />
+
+            <TextView
+                android:id="@+id/tvSubtitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:alpha="0.7"
+                android:fontFamily="@font/google_sans_flex"
+                android:lineSpacingExtra="4dp"
+                android:text="Gestiona tus productos y pedidos en un solo lugar con la mejor experiencia"
+                android:textAlignment="center"
+                android:textColor="#2D2D2D"
+                android:textSize="15sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvWelcomeTitle" />
+
+            <LinearLayout
+                android:id="@+id/layoutFeatures"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:orientation="horizontal"
+                android:gravity="center"
+                app:layout_constraintTop_toBottomOf="@+id/tvSubtitle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="52dp"
+                        android:layout_height="52dp"
+                        app:cardCornerRadius="18dp"
+                        app:cardElevation="0dp"
+                        app:strokeWidth="0dp"
+                        android:backgroundTint="#0D000000">
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_add_shopping_cart"
+                            app:tint="#D65DB1"/>
+                    </com.google.android.material.card.MaterialCardView>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Productos"
+                        android:fontFamily="@font/google_sans_flex"
+                        android:textColor="#555555"
+                        android:textSize="12sp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="52dp"
+                        android:layout_height="52dp"
+                        app:cardCornerRadius="18dp"
+                        app:cardElevation="0dp"
+                        app:strokeWidth="0dp"
+                        android:backgroundTint="#0D000000">
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_delivery"
+                            app:tint="#D65DB1"/>
+                    </com.google.android.material.card.MaterialCardView>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Entregas"
+                        android:fontFamily="@font/google_sans_flex"
+                        android:textColor="#555555"
+                        android:textSize="12sp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="52dp"
+                        android:layout_height="52dp"
+                        app:cardCornerRadius="18dp"
+                        app:cardElevation="0dp"
+                        app:strokeWidth="0dp"
+                        android:backgroundTint="#0D000000">
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_secure"
+                            app:tint="#D65DB1"/>
+                    </com.google.android.material.card.MaterialCardView>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Seguro"
+                        android:fontFamily="@font/google_sans_flex"
+                        android:textColor="#555555"
+                        android:textSize="12sp"/>
+                </LinearLayout>
+
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnGetStarted"
@@ -52,9 +218,16 @@
         android:layout_marginBottom="48dp"
         android:text="Comenzar"
         android:textSize="16sp"
-        android:textStyle="bold"
+        android:fontFamily="@font/google_sans_bold"
+        android:letterSpacing="0.02"
+        android:textAllCaps="false"
         app:cornerRadius="30dp"
         android:backgroundTint="#D65DB1"
+        app:elevation="8dp"
+        app:icon="@drawable/ic_arrow_forward"
+        app:iconGravity="end"
+        app:iconSize="20dp"
+        app:iconTint="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

@@ -38,30 +38,44 @@ class CartAdapter(
 
         fun bind(cartProduct: CartProduct) {
             val product = cartProduct.product
-            binding.tvProductName.text = product.name
+
+
+            binding.tvName.text = product.name
+
+
             binding.tvQuantity.text = cartProduct.quantity.toString()
 
+
             val priceFormatted = String.format(Locale.US, "%,.0f", product.price)
-            binding.tvProductPrice.text = "$$priceFormatted"
+            binding.tvPrice.text = "$$priceFormatted"
+
 
             val imageUrl = product.imageUrl?.firstOrNull()?.path.asVaultUrl()
             Glide.with(itemView)
                 .load(imageUrl)
-                .placeholder(R.drawable.ic_placeholder)
-                .into(binding.ivProductImage)
+                .placeholder(R.drawable.ic_placeholder) // Asegúrate de tener este icono o cámbialo
+                .into(binding.ivThumb)
 
-            // Listeners
-            binding.btnIncrease.setOnClickListener {
+
+
+
+            binding.btnPlus.setOnClickListener {
                 onQuantityChange(product.id!!, cartProduct.quantity + 1)
             }
 
-            binding.btnDecrease.setOnClickListener {
-                onQuantityChange(product.id!!, cartProduct.quantity - 1)
+
+            binding.btnMinus.setOnClickListener {
+                val currentQty = cartProduct.quantity
+                if (currentQty > 1) {
+
+                    onQuantityChange(product.id!!, currentQty - 1)
+                } else {
+
+                    onRemoveItem(product.id!!)
+                }
             }
 
-            binding.btnRemove.setOnClickListener {
-                onRemoveItem(product.id!!)
-            }
+
         }
     }
 

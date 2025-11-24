@@ -11,5 +11,5 @@ interface XanoApi {
     suspend fun login(@Body body: LoginRequest): LoginResponse
 
     @GET("auth/me")
-    suspend fun me(): Any // si tienes el modelo de usuario, cámbialo por `User`
+    suspend fun me(): Any
 }

@@ -22,7 +22,7 @@ object RetrofitClient {
         return OkHttpClient.Builder()
             .addInterceptor(log)
             .apply { if (extra != null) addInterceptor(extra) }
-            // timeouts útiles para upload de imágenes
+
             .connectTimeout(30, TimeUnit.SECONDS)
             .readTimeout(60, TimeUnit.SECONDS)
             .writeTimeout(60, TimeUnit.SECONDS)

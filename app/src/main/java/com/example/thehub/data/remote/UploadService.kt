@@ -10,6 +10,6 @@ interface UploadService {
     @Multipart
     @POST("upload/image")
     suspend fun uploadImages(
-        @Part parts: List<MultipartBody.Part> // cada part con nombre "content[]"
+        @Part parts: List<MultipartBody.Part>
     ): List<ProductImage>
 }
