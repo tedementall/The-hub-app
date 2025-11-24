@@ -31,8 +31,8 @@ object ServiceLocator {
     val authRepository: AuthRepository by lazy { AuthRepository(authApi) }
     val productRepository: ProductRepository by lazy { ProductRepository(storeApi) }
 
-    // --- AÑADIR ESTA LÍNEA ---
+
     // Esto crea una instancia única del repositorio del carrito
     val cartRepository: CartRepository by lazy { CartRepository }
-    // --- FIN DE LA ADICIÓN ---
+
 }

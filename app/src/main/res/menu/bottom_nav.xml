@@ -2,28 +2,28 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/menu_home"
+        android:id="@+id/navigation_home"
         android:icon="@drawable/ic_home"
         android:title="Inicio" />
 
     <item
-        android:id="@+id/menu_search"
+        android:id="@+id/navigation_search"
         android:icon="@drawable/ic_search"
         android:title="Buscar" />
 
     <item
-        android:id="@+id/menu_cart"
+        android:id="@+id/navigation_cart"
         android:icon="@drawable/ic_cart"
         android:title="Carrito" />
 
     <item
-        android:id="@+id/menu_profile"
-        android:icon="@drawable/ic_person"
-        android:title="Perfil" />
+        android:id="@+id/navigation_blog"
+        android:icon="@drawable/ic_newspaper"
+        android:title="Blog" />
 
     <item
-        android:id="@+id/menu_settings"
-        android:icon="@drawable/ic_settings"
-        android:title="Ajustes" />
+        android:id="@+id/navigation_profile"
+        android:icon="@drawable/ic_person"
+        android:title="Perfil" />
 
 </menu>

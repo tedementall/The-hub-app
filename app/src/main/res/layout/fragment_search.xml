@@ -26,6 +26,7 @@
             app:iconifiedByDefault="false"
             app:searchIcon="@drawable/ic_search"
             android:queryHint="¿Qué estás buscando?" />
+
     </com.google.android.material.card.MaterialCardView>
 
     <HorizontalScrollView

@@ -1,31 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/home_nav_graph"
-    app:startDestination="@id/menu_home">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_home">
 
     <fragment
-        android:id="@+id/menu_home"
+        android:id="@+id/navigation_home"
         android:name="com.example.thehub.ui.home.HomeFragment"
-        android:label="@string/home_title" />
+        android:label="Inicio"
+        tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/menu_search"
+        android:id="@+id/navigation_search"
         android:name="com.example.thehub.ui.search.SearchFragment"
-        android:label="@string/search_placeholder_title" />
+        android:label="Buscar"
+        tools:layout="@layout/fragment_search" />
 
     <fragment
-        android:id="@+id/menu_cart"
+        android:id="@+id/navigation_cart"
         android:name="com.example.thehub.ui.cart.CartFragment"
-        android:label="@string/cart_placeholder_title" />
+        android:label="Carrito"
+        tools:layout="@layout/fragment_cart" />
 
     <fragment
-        android:id="@+id/menu_profile"
+        android:id="@+id/navigation_blog"
+        android:name="com.example.thehub.ui.blog.BlogFragment"
+        android:label="Blog"
+        tools:layout="@layout/fragment_blog" />
+
+    <fragment
+        android:id="@+id/navigation_profile"
         android:name="com.example.thehub.ui.profile.ProfileFragment"
-        android:label="@string/profile_placeholder_title" />
+        android:label="Perfil"
+        tools:layout="@layout/fragment_profile" />
 
     <fragment
-        android:id="@+id/menu_settings"
+        android:id="@+id/navigation_settings"
         android:name="com.example.thehub.ui.settings.SettingsFragment"
-        android:label="@string/settings_title" />
+        android:label="Ajustes"
+        tools:layout="@layout/fragment_settings" />
+
 </navigation>

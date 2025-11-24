@@ -18,13 +18,13 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.util.Locale
 
-// Usar el nuevo layout 'fragment_cart.xml'
+
 class CartFragment : Fragment(R.layout.fragment_cart) {
 
     private var _binding: FragmentCartBinding? = null
     private val binding get() = _binding!!
 
-    // Accedemos al repositorio desde ServiceLocator
+
     private val cartRepository: CartRepository = ServiceLocator.cartRepository
 
     private lateinit var cartAdapter: CartAdapter
@@ -44,11 +44,11 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
         setupRecyclerView()
         observeCart()
 
-        // Conectar el botón para ir a la nueva Activity de Checkout
+
         binding.btnCheckout.setOnClickListener {
-            // Asegurarnos de que el carrito no esté vacío
+
             if (cartRepository.cartItems.value.isNotEmpty()) {
-                // Iniciar la nueva actividad de Checkout
+
                 val intent = Intent(requireContext(), CheckoutActivity::class.java)
                 startActivity(intent)
             } else {
@@ -67,21 +67,22 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
             }
         )
         binding.rvCartItems.adapter = cartAdapter
+        binding.rvCartItems.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
     }
 
     private fun observeCart() {
-        // Observamos el StateFlow del repositorio
+
         viewLifecycleOwner.lifecycleScope.launch {
             cartRepository.cartItems.collectLatest { cartItems ->
                 // Actualizar el adapter
                 cartAdapter.submitList(cartItems)
 
-                // Actualizar la vista de "vacío" (usando el estilo opaco)
+
                 binding.emptyView.isVisible = cartItems.isEmpty()
                 binding.cardTotal.isVisible = cartItems.isNotEmpty()
                 binding.rvCartItems.isVisible = cartItems.isNotEmpty()
 
-                // Calcular y mostrar el subtotal
+
                 val subtotal = cartRepository.getSubtotal()
                 val subtotalFormatted = String.format(Locale.US, "%,.0f", subtotal)
                 binding.tvSubtotal.text = "$$subtotalFormatted"

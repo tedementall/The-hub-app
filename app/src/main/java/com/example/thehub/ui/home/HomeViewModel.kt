@@ -9,7 +9,7 @@ class HomeViewModel(
     private val repo: ProductRepository
 ) : ViewModel() {
 
-    private val _products = MutableLiveData<List<Product>>()   // <— tipo explícito
+    private val _products = MutableLiveData<List<Product>>()
     val products: LiveData<List<Product>> = _products
 
     private val _error = MutableLiveData<String?>()

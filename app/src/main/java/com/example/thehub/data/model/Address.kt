@@ -20,7 +20,7 @@ data class Address(
     @SerializedName("zip_code")
     val codigoPostal: String? = null,
 
-    // Campos que no existen en Xano pero los necesita el ProfileFragment
+
     val numero: String = "",
     val depto: String = ""
 )
